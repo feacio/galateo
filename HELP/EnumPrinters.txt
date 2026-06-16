@@ -1,0 +1,122 @@
+EnumPrinters
+The EnumPrinters function enumerates available printers, print servers, domains, or print providers.
+
+BOOL EnumPrinters(
+  DWORD Flags,         // printer object types
+  LPTSTR Name,         // name of printer object
+  DWORD Level,         // information level
+  LPBYTE pPrinterEnum, // printer information buffer
+  DWORD cbBuf,         // size of printer information buffer
+  LPDWORD pcbNeeded,   // bytes received or required
+  LPDWORD pcReturned   // number of printers enumerated
+);
+Parameters
+Flags
+[in] Specifies the types of print objects that the function should enumerate. This value can be one or more of the following values. Value Meaning
+PRINTER_ENUM_LOCAL The function ignores the Name parameter, and enumerates the locally installed printers.
+Windows 95/98/Me: The function will also enumerate network printers because they are handled by the local print provider.
+
+PRINTER_ENUM_NAME The function enumerates the printer identified by Name. This can be a server, a domain, or a print provider. If Name is NULL, the function enumerates available print providers.
+PRINTER_ENUM_SHARED The function enumerates printers that have the shared attribute. Cannot be used in isolation; use an OR operation to combine with another PRINTER_ENUM type.
+PRINTER_ENUM_DEFAULT Windows 95/98/Me: The function returns information about the default printer.
+PRINTER_ENUM_CONNECTIONS Windows NT/2000/XP: The function enumerates the list of printers to which the user has made previous connections.
+PRINTER_ENUM_NETWORK Windows NT/2000/XP: The function enumerates network printers in the computer's domain. This value is valid only if Level is 1.
+PRINTER_ENUM_REMOTE Windows NT/2000/XP: The function enumerates network printers and print servers in the computer's domain. This value is valid only if Level is 1.
+
+
+If Level is 4, you can only use the PRINTER_ENUM_CONNECTIONS and PRINTER_ENUM_LOCAL constants.
+
+Name
+[in] If Level is 1, Flags contains PRINTER_ENUM_NAME, and Name is non-NULL, then Name is a pointer to a null-terminated string that specifies the name of the object to enumerate. This string can be the name of a server, a domain, or a print provider.
+If Level is 1, Flags contains PRINTER_ENUM_NAME, and Name is NULL, then the function enumerates the available print providers.
+
+If Level is 1, Flags contains PRINTER_ENUM_REMOTE, and Name is NULL, then the function enumerates the printers in the user's domain.
+
+If Level is 2 or 5, Name is a pointer to a null-terminated string that specifies the name of a server whose printers are to be enumerated. If this string is NULL, then the function enumerates the printers installed on the local machine.
+
+If Level is 4, Name should be NULL. The function always queries on the local machine.
+
+When Name is NULL, setting Flags to PRINTER_ENUM_LOCAL | PRINTER_ENUM_CONNECTIONS enumerates printers that are installed on the local machine. These printers include those that are physically attached to the local machine as well as remote printers to which it has a network connection.
+
+Level
+[in] Specifies the type of data structures pointed to by pPrinterEnum. Valid values are 1, 2, 4, and 5, which correspond to the PRINTER_INFO_1, PRINTER_INFO_2, PRINTER_INFO_4, and PRINTER_INFO_5 data structures.
+Windows 95/98/Me: The value can be 1, 2, or 5.
+
+Windows NT/2000/XP: This value can be 1, 2, 4, or 5.
+
+pPrinterEnum
+[out] Pointer to a buffer that receives an array of PRINTER_INFO_1, PRINTER_INFO_2, PRINTER_INFO_4, or PRINTER_INFO_5 structures. Each structure contains data that describes an available print object.
+If Level is 1, the array contains PRINTER_INFO_1 structures. If Level is 2, the array contains PRINTER_INFO_2 structures. If Level is 4, the array contains PRINTER_INFO_4 structures. If Level is 5, the array contains PRINTER_INFO_5 structures.
+
+The buffer must be large enough to receive the array of data structures and any strings or other data to which the structure members point. If the buffer is too small, the pcbNeeded parameter returns the required buffer size.
+
+Windows 95/98/Me: The buffer cannot receive PRINTER_INFO_4 structures. It can receive any of the other types.
+
+cbBuf
+[in] Specifies the size, in bytes, of the buffer pointed to by pPrinterEnum.
+pcbNeeded
+[out] Pointer to a value that receives the number of bytes copied if the function succeeds or the number of bytes required if cbBuf is too small.
+pcReturned
+[out] Pointer to a value that receives the number of PRINTER_INFO_1, PRINTER_INFO_2, PRINTER_INFO_4, or PRINTER_INFO_5 structures that the function returns in the array to which pPrinterEnum points.
+Return Values
+If the function succeeds, the return value is a nonzero value.
+
+If the function fails, the return value is zero. To get extended error information, call GetLastError.
+
+Remarks
+If EnumPrinters returns a PRINTER_INFO_1 structure in which PRINTER_ENUM_CONTAINER is specified, this indicates that there is a hierarchy of printer objects. An application can enumerate the hierarchy by calling EnumPrinters again, setting Name to the value of the PRINTER_INFO_1 structure's pName member.
+
+The EnumPrinters function does not retrieve security information. If PRINTER_INFO_2 structures are returned in the array pointed to by pPrinterEnum, their pSecurityDescriptor members will be set to NULL.
+
+To get information about the default printer, call the GetProfileString function with the section name string set to "windows" and the key name string set to "device". The returned string contains the name of the default printer, the name of the printer DRV file, and the port to which the printer is attached.
+
+Windows 2000/XP: To get information about the default printer, call GetDefaultPrinter
+
+Windows NT/2000/XP: The PRINTER_INFO_4 structure provides an easy and extremely fast way to retrieve the names of the printers installed on a local machine, as well as the remote connections that a user has established. When EnumPrinters is called with a PRINTER_INFO_4 data structure, that function queries the registry for the specified information, then returns immediately. This differs from the behavior of EnumPrinters when called with other levels of PRINTER_INFO_* data structures. In particular, when EnumPrinters is called with a level 2 (PRINTER_INFO_2) data structure, it performs an OpenPrinter call on each remote connection. If a remote connection is down, or the remote server no longer exists, or the remote printer no longer exists, the function must wait for RPC to time out and consequently fail the OpenPrinter call. This can take a while. Passing a PRINTER_INFO_4 structure lets an application retrieve a bare minimum of required information; if more detailed information is desired, a subsequent EnumPrinter level 2 call can be made.
+
+Windows 95/98/Me: To quickly enumerate local and network printers, use the PRINTER_INFO_5 structure. This causes EnumPrinters to query the registry rather than make remote calls, and is similar to using the PRINTER_INFO_4 structure as described in the preceding paragraph.
+
+Examples
+The following table shows the EnumPrinters output for various Flags values when the Level parameter is set to 1.
+
+In the Name parameter column of the table, you should substitute an appropriate name for Print Provider, Domain, and Machine. For example, for Print Provider, you could use the name of the network print provider, or the name of the local print provider. To retrieve print provider names, call EnumPrinters with Name set to NULL.
+
+Flags parameter Name parameter Result
+PRINTER_ENUM_LOCAL The Name parameter is ignored. All local printers.
+Windows 95/98/Me: Also enumerates network printers because they are installed locally.
+
+PRINTER_ENUM_NAME "Print Provider" All domain names
+PRINTER_ENUM_NAME Windows NT/2000/XP:
+"Print Provider!Domain" All printers and print servers in the computer's domain
+PRINTER_ENUM_NAME Windows NT/2000/XP:
+"Print Provider!!\\Machine" All printers shared at \\Machine
+PRINTER_ENUM_NAME Windows NT/2000/XP: An empty string, ""
+Windows 95/98/Me: The name of the local machine or the local print provider.
+ All local printers.
+Windows 95/98/Me: Also enumerates network printers because they are installed locally.
+
+PRINTER_ENUM_NAME NULL All print providers in the computer's domain
+Windows NT/2000/XP:
+PRINTER_ENUM_CONNECTIONS  The Name parameter is ignored. All connected remote printers
+Windows NT/2000/XP:
+PRINTER_ENUM_NETWORK  The Name parameter is ignored. All printers in the computer's domain
+Windows NT/2000/XP:
+PRINTER_ENUM_REMOTE  An empty string, "" All printers and print servers in the computer's domain
+Windows NT/2000/XP:
+PRINTER_ENUM_REMOTE  "Print Provider" Same as PRINTER_ENUM_NAME
+Windows NT/2000/XP:
+PRINTER_ENUM_REMOTE  "Print Provider!Domain" All printers and print servers in computer's domain, regardless of Domain specified.
+
+
+Requirements
+  Windows NT/2000/XP: Included in Windows NT 3.1 and later.
+  Windows 95/98/Me: Included in Windows 95 and later.
+  Header: Declared in Winspool.h; include Windows.h.
+  Library: Use Winspool.lib.
+  Unicode: Implemented as Unicode and ANSI versions on Windows NT/2000/XP.
+
+See Also
+Printing and Print Spooler Overview, Printing and Print Spooler Functions, AddPrinter, DeletePrinter, GetPrinter, GetProfileString, PRINTER_INFO_1, PRINTER_INFO_2, PRINTER_INFO_4, PRINTER_INFO_5, SetPrinter
+
+
+--------------------------------------------------------------------------------

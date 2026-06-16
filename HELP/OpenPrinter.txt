@@ -1,0 +1,56 @@
+OpenPrinter
+The OpenPrinter function retrieves a handle to the specified printer or print server or other types of handles in the print subsystem.
+
+BOOL OpenPrinter(
+  LPTSTR pPrinterName,         // printer or server name
+  LPHANDLE phPrinter,          // printer or server handle
+  LPPRINTER_DEFAULTS pDefault  // printer defaults
+);
+Parameters
+pPrinterName
+[in] Pointer to a null-terminated string that specifies the name of the printer or print server, the printer object, the XcvMonitor, or the XcvPort.
+For a printer object use: PrinterName,Job xxxx. For an XcvMonitor, use: ServerName,XcvMonitor MonitorName. For an XcvPort, use: ServerName,XcvPort PortName.
+
+Windows NT/2000/XP: If NULL, it indicates the local printer server.
+
+phPrinter
+[out] Pointer to a variable that receives a handle to the open printer or print server object.
+Windows 2000/XP: The phPrinter parameter can return an Xcv handle for use with the XcvData function. For more information about XcvData, see the Microsoft Windows 2000 Driver Development Kit.
+
+pDefault
+[in] Pointer to a PRINTER_DEFAULTS structure. This value can be NULL.
+Return Values
+If the function succeeds, the return value is a nonzero value.
+
+If the function fails, the return value is zero. To get extended error information, call GetLastError.
+
+Remarks
+The pDefault parameter enables you to specify the data type and device mode values that are used for printing documents submitted by the StartDocPrinter function. However, you can override these values by using the SetJob function after a document has been started.
+
+You can call the OpenPrinter function to open a handle to a print server or to determine the access rights that a client has to a print server. To do so, specify the name of the print server in the pPrinterName parameter, set the pDatatype and pDevMode members of the PRINTER_DEFAULTS structure to NULL, and set the DesiredAccess member to specify a server access mask value such as SERVER_ALL_ACCESS. When you are finished with the handle, pass it to the ClosePrinter function to close it.
+
+Windows 95/98/Me: OpenPrinter ignores the DesiredAccess member of PRINTER_DEFAULTS.
+
+Windows NT/2000/XP: Use the DesiredAccess member of the PRINTER_DEFAULTS structure to specify the access rights that you need to the printer. The access rights can be one of the following.
+
+Desired Access value Meaning
+PRINTER_ACCESS_ADMINISTER To perform administrative tasks, such as those provided by SetPrinter.
+PRINTER_ACCESS_USE To perform basic printing operations.
+PRINTER_ALL_ACCESS To perform all administrative tasks and basic printing operations except for SYNCHRONIZE (see Standard Access Rights.
+generic security values, such as WRITE_DAC  To allow specific control access rights. See Standard Access Rights.
+
+
+If a user does not have permission to open a specified printer or print server with the desired access, the OpenPrinter call will fail, and GetLastError will return the value ERROR_ACCESS_DENIED.
+
+Windows 95/98/Me: OpenPrinterW is supported by the Microsoft Layer for Unicode. To use this, you must add certain files to your application, as outlined in Microsoft Layer for Unicode on Windows 95/98/Me Systems.
+
+Requirements
+  Windows NT/2000/XP: Included in Windows NT 3.1 and later.
+  Windows 95/98/Me: Included in Windows 95 and later.
+  Header: Declared in Winspool.h; include Windows.h.
+  Library: Use Winspool.lib.
+  Unicode: Implemented as Unicode and ANSI versions on Windows NT/2000/XP. Also supported by Microsoft Layer for Unicode.
+
+See Also
+Printing and Print Spooler Overview, Printing and Print Spooler Functions, ClosePrinter, PRINTER_DEFAULTS, SetJob, SetPrinter, StartDocPrinter
+

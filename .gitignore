@@ -1,0 +1,56 @@
+# === Delphi / RAD Studio build artifacts ===
+*.dcu
+*.dcuil
+*.o
+*.obj
+*.ddp
+*.~ddp
+*.map
+*.drc
+*.tds
+*.rsm
+
+# Compiler/linker output directories
+[Ww]in32/
+[Ww]in64/
+[Dd]ebug/
+[Rr]elease/
+__history/
+__recovery/
+__astcache/
+temp/
+
+# IDE state / per-user settings (not source)
+*.local
+*.identcache
+*.dsk
+*.~dsk
+*.stat
+*.tvsconfig
+*.skincfg
+*.dof
+*.cfg
+*.groupproj.local
+
+# Editor backups
+*.~pas
+*.~dfm
+*.~dpr
+*.~dproj
+*.bak
+
+# === Binaries ===
+*.exe
+*.dll
+*.bpl
+*.bpi
+*.lib
+
+# === OS / junk ===
+Thumbs.db
+Desktop.ini
+
+# === Archives / legacy bundles ===
+*.rar
+*.zip
+*.7z

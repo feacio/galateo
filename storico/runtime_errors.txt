@@ -1,0 +1,21 @@
+======================== inizio sessione di debug ===========================
+--2024-04-05 11:50:16.82	      0	ASUS-2019           	       	764807	000172	--	ASUS-2019	Connessione a database	Connessione non riuscita
+
+Profilo <JOLLY> non accessibile
+
+Profilo <JOLLY> non accessibile
+--2024-04-05 11:50:16.82	      0	ASUS-2019           	       	764807	000173	--	Connessione a database	Connessione non riuscita
+
+Profilo <JOLLY> non accessibile
+
+Profilo <JOLLY> non accessibile
+--2024-04-05 11:50:18.51	  1.693	ASUS-2019           	       	764807	000174	--	ASUS-2019	Connessione a database	Connessione non riuscita
+
+Profilo <JOLLY> non accessibile
+
+Profilo <JOLLY> non accessibile
+--2024-04-05 11:50:18.51	      0	ASUS-2019           	       	764807	000175	--	Connessione a database	Connessione non riuscita
+
+Profilo <JOLLY> non accessibile
+
+Profilo <JOLLY> non accessibile

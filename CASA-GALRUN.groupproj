@@ -1,0 +1,60 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{51A6F0A5-78CF-4CC2-870B-DDBA592218CA}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="CASA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="GALATEO.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="run\GALRUN.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="CASA">
+        <MSBuild Projects="CASA.dproj"/>
+    </Target>
+    <Target Name="CASA:Clean">
+        <MSBuild Projects="CASA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CASA:Make">
+        <MSBuild Projects="CASA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GALATEO">
+        <MSBuild Projects="GALATEO.dproj"/>
+    </Target>
+    <Target Name="GALATEO:Clean">
+        <MSBuild Projects="GALATEO.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GALATEO:Make">
+        <MSBuild Projects="GALATEO.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="GALRUN">
+        <MSBuild Projects="run\GALRUN.dproj"/>
+    </Target>
+    <Target Name="GALRUN:Clean">
+        <MSBuild Projects="run\GALRUN.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GALRUN:Make">
+        <MSBuild Projects="run\GALRUN.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="CASA;GALATEO;GALRUN"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="CASA:Clean;GALATEO:Clean;GALRUN:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="CASA:Make;GALATEO:Make;GALRUN:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

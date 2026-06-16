@@ -1,0 +1,1 @@
+*** la versione è su GALATEO_VERSIONE.PAS

@@ -1,0 +1,76 @@
+GetPrinter
+The GetPrinter function retrieves information about a specified printer. 
+
+BOOL GetPrinter(
+  HANDLE hPrinter,    // handle to printer
+  DWORD Level,        // information level
+  LPBYTE *pPrinter,    // printer information buffer
+  DWORD cbBuf,        // size of buffer
+  LPDWORD pcbNeeded   // bytes received or required
+);
+Parameters
+hPrinter 
+[in] Handle to the printer for which the function retrieves information. Use the OpenPrinter or AddPrinter function to retrieve a printer handle. 
+Level 
+[in] Specifies the level or type of structure that the function stores into the buffer pointed to by pPrinter. 
+Windows 95/98/Me: This value can be 1, 2, or 5. 
+
+Windows NT/2000/XP: This value can be 1, 2, 3, 4, 5, 6, 7, 8 or 9. 
+
+pPrinter 
+[out] Pointer to a buffer that receives a structure containing information about the specified printer. The buffer must be large enough to receive the structure and any strings or other data to which the structure members point. If the buffer is too small, the pcbNeeded parameter returns the required buffer size. 
+The type of structure is determined by the value of Level. Level Structure 
+1 A PRINTER_INFO_1 structure containing general printer information. 
+2 A PRINTER_INFO_2 structure containing detailed information about the printer. 
+3 Windows NT/2000/XP: A PRINTER_INFO_3 structure containing the printer's security information.  
+4 Windows NT/2000/XP: A PRINTER_INFO_4 structure containing minimal printer information, including the name of the printer, the name of the server, and whether the printer is remote or local. 
+5 A PRINTER_INFO_5 structure containing printer information such as printer attributes and time-out settings. 
+6 Windows 2000/XP: A PRINTER_INFO_6 structure specifying the status value of a printer. 
+7 Windows 2000/XP: A PRINTER_INFO_7 structure that indicates whether the printer is published in the directory service. 
+8 Windows 2000/XP: A PRINTER_INFO_8 structure specifying the global default printer settings. 
+9 Windows 2000/XP: A PRINTER_INFO_9 structure specifying the per-user default printer settings. 
+
+
+
+cbBuf 
+[in] Specifies the size, in bytes, of the buffer pointed to by pPrinter. 
+pcbNeeded 
+[out] Pointer to a variable that the function sets to the size, in bytes, of the printer information. If cbBuf is smaller than this value, GetPrinter fails, and the value represents the required buffer size. If cbBuf is equal to or greater than this value, GetPrinter succeeds, and the value represents the number of bytes stored in the buffer. 
+Return Values
+If the function succeeds, the return value is a nonzero value.
+
+If the function fails, the return value is zero. To get extended error information, call GetLastError. 
+
+Remarks
+ Security Alert   The pDevMode member in the PRINTER_INFO_2, PRINTER_INFO_8, and PRINTER_INFO_9 structures can be NULL. When this happens, the printer is unusable until the driver is reinstalled successfully. 
+Windows NT/2000/XP: For the PRINTER_INFO_2 and PRINTER_INFO_3 structures that contain a pointer to a security descriptor, the function retrieves only those components of the security descriptor that the caller has permission to read. To retrieve particular security descriptor components, you must specify the necessary access rights when you call the OpenPrinter function to retrieve a handle to the printer. The following table shows the access rights required to read the various security descriptor components.
+
+Access Right Security Descriptor Component 
+READ_CONTROL Owner 
+Primary group 
+Discretionary access-control list (DACL) 
+ACCESS_SYSTEM_SECURITY System access-control list (SACL) 
+
+
+Windows 95/98/Me: the pSecurityDescriptor member in the PRINTER_INFO_2 and PRINTER_INFO_3 structures is ignored. The design of an application should take this into account.
+
+Windows 2000/XP: If you specify level 7, the dwAction member of PRINTER_INFO_7 returns one of the following values to indicate whether the printer is published in the directory service. 
+
+dwAction value Meaning 
+DSPRINT_PUBLISH The printer is published. The pszObjectGUID member contains the GUID of the directory services print queue object associated with the printer.  
+DSPRINT_UNPUBLISH The printer is not published. 
+DSPRINT_PENDING Indicates that the system is attempting to complete a publish or unpublish operation. If a SetPrinter call fails to publish or unpublish a printer, the system makes further attempts to complete the operation in the background.  
+
+
+Requirements 
+  Windows NT/2000/XP: Included in Windows NT 3.1 and later.
+  Windows 95/98/Me: Included in Windows 95 and later.
+  Header: Declared in Winspool.h; include Windows.h.
+  Library: Use Winspool.lib.
+  Unicode: Implemented as Unicode and ANSI versions on Windows NT/2000/XP.
+
+See Also
+Printing and Print Spooler Overview, Printing and Print Spooler Functions, AbortPrinter, AddPrinter, ClosePrinter, DeletePrinter, EnumPrinters, PRINTER_INFO_1, PRINTER_INFO_2, PRINTER_INFO_3, PRINTER_INFO_4, PRINTER_INFO_5, PRINTER_INFO_7, PRINTER_INFO_8, PRINTER_INFO_9, OpenPrinter, SetPrinter 
+
+
+--------------------------------------------------------------------------------

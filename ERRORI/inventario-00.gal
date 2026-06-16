@@ -1,0 +1,2799 @@
+File formato GALATEO
+ 608
+stampa inventario
+-2147483640 8 ***MS Sans Serif
+112 66 15 6
+
+
+7989-87-86 90:44 *hbhgvn       evi 9391 [QLOOB/rmevmgzirl-xzhgvoor.tzo]  nlwrurxz ziilglmwznvmgl ezofgz (dzh wvxrnzor_NZC) -- zvhgs vcklig rmgvtizov7993-88-83 89:83 *hbhgvn       evi 9418 [HVIEVI98]  kvihlmzoraazarlmv kvi Xzhgvoor (irxsrvhgz yb Mvnyirmr)7993-98-92 88:44 *hbhgvn       evi 9423 [U199]  vornrmzgr glgzor rm oriv7994-95-92 87:87 *hbhgvn       evi 9431 [U199]  vhgvgrxz7994-95-92 99:46 *hbhgvn       evi 9431 [U199]  xznyrzgl mlnv zo urov WYU7995-89-77 82:43 *hbhgvn       evi 9433 [U199]7995-94-96 87:52 *hbhgvn       evi 9438 [U199]7995-94-96 88:42 *hbhgvn       evi 9438 [U199]7995-95-90 81:91 *hbhgvn       evi 9438 [U8999]7995-95-94 81:76 *hbhgvn       evi 9438 [U8999]061
+
+
+
+
+
+
+0 0 0 0 1 1 0.0000 0.0000 TRUE
+FALSE
+TRUE
+srl 
+
+
+0
+0 8 1
+BIKTt0
+
+call LIFO_interpreta_rimanenze($PARM_ANNO, '$PARM_VALUTA');-#@#-generazione valori
+
+
+
+
+
+1
+
+
+0 0
+F
+2970
+
+
+
+
+
+
+ 5
+1
+BCDEXb2
+0 0 0 0 0 0 0 0 0
+
+
+
+T         
+
+
+
+
+
+
+
+inventario-$PARM_ANNO
+1 0 0
+
+
+
+
+0 0 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+3 1
+
+
+
+F
+
+T
+
+
+
+3
+
+F
+ 1.90000000000000E+0001  2.80000000000000E+0001
+default
+
+
+0 0.500 0.500
+
+
+
+
+
+F
+
+
+
+
+ 1 1 1 0 0 1 0 0 0 0 0 0
+1 
+
+
+Principale
+0 0.0000 28.0000 28.0000
+ACFX
+select * from jolly where i_numero_zero = 0
+0 0
+Arial
+-9 9
+
+
+
+
+
+
+
+
+
+
+0.0000 0 0 0 0 0 0 0 0 0 0
+0 0 0 
+1 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+34
+VARIABILE
+PARM_ANNO
+0.000 0.000 1.799
+
+Arial
+0 8
+BAaWHX
+0 1 0 0 0
+
+1999
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+1 10 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+anno
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+PARM_DATA_STAMPA
+1.984 0.000 3.201
+
+Arial
+-9 8
+BAcWHX
+1 1 0 0 0
+
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+PARM_VALUTA
+11.906 0.000 2.196
+
+Arial
+0 8
+BAaWHX
+1 2 0 0 0
+
+EURO
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+RUNT_ORDER_BY
+15.954 0.000 2.355
+
+Arial
+0 8
+BAaQx1"02WHXjk
+1 2 0 0 0
+
+IL_str_articolo
+ /  /  / 
+NON E' UN PARAMETRO !!!
+
+
+
+
+
+
+
+
+ordina per
+0.0000
+
+codicecosto unitariocosto totaledifferenza costo-listino
+IL_str_articoloIL_cr_prezzo DESC, IL_str_articoloIL_cr_prezzo * IL_fl_qta DESC, IL_str_articolocr_scontato_forn - IL_cr_prezzo, IL_str_articolo
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+RUNT_BO_PREZZI_ARKART
+8.017 0.000 3.757
+
+Arial
+0 8
+BAaQx1"02WHXjk
+1 2 0 0 0
+
+F
+ /  /  / 
+se T, viene stampato il prezzo dell'archivio articoli (per confronto)
+
+
+
+
+
+
+
+
+valori fornitore principale
+0.0000
+
+stampaNON stampare
+TF
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+RUNT_BO_RIMANENZE
+7.990 0.370 3.069
+
+Arial
+0 8
+BAaQx1"02WHXjk
+1 2 0 0 0
+
+F
+ /  /  / 
+se T, viene stampato il prezzo dell'archivio articoli (per confronto)
+
+
+
+
+
+
+
+
+rimanenze anni precedenti
+0.0000
+
+stampaNON stampare
+TF
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+RUNT_DESCRIZIONE
+5.212 0.000 2.725
+
+Arial
+-9 8
+BAcQx0"02WHXk
+1 1 0 0 0
+
+INVENTARIO "LIFO"
+ /  /  / 
+
+
+
+
+
+
+
+
+
+descrizione della stampa
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+RUNT_BO_PRINT_DATA
+7.990 0.767 3.228
+
+Arial
+0 8
+BAaQx1"02WHXjk
+1 2 0 0 0
+
+T
+ /  /  / 
+se T, viene stampato il prezzo dell'archivio articoli (per confronto)
+
+
+
+
+
+
+
+
+data di stampa
+0.0000
+
+stampaNON stampare
+TF
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+str_print_int_parm_01
+0.609 0.476 5.424
+
+Arial
+0 14
+BAcVX
+1 2 0 0 0
+str_print_int_parm_01
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+1 20 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+denominazione
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+str_print_int_parm_02
+0.609 1.111 4.048
+
+Arial
+0 11
+BAcVX
+1 2 0 0 0
+str_print_int_parm_02
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+str_print_int_parm_03
+0.609 1.588 4.048
+
+Arial
+0 11
+BAcVX
+1 2 0 0 0
+str_print_int_parm_03
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+i_decimali_fissi
+12.091 0.291 1.905
+
+Arial
+-9 8
+AaEHXe
+0 1 0 0 0
+SELECT VAL_i_decimali_fissiFROM valuteWHERE (VAL_str_codice = '$PARM_VALUTA')
+4
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+TITOLO_STAMPA
+12.144 0.582 3.334
+RUNT_DESCRIZIONE
+Arial
+-9 11
+BAcX
+1 1 0 0 0
+
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+intestazione
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+inventario_esercizio
+12.144 1.111 3.836
+"al 31/12/" + PARM_ANNO
+Arial
+-9 11
+BAcX
+1 1 0 0 0
+
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+elaborato_il
+12.144 1.588 2.196
+if (PARM_DATA_STAMPA = "";"";"stampato il " + PARM_DATA_STAMPA)
+Arial
+-9 11
+BAcX
+1 1 0 0 0
+
+ABC
+ /  /  / 
+
+
+RUNT_BO_PRINT_DATA = "T"
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RETTANGOLO
+0.000 2.249 18.706 24.527
+ /  /  / 
+RECT_MAIN
+0 1
+0
+
+
+
+
+
+
+
+
+16777215
+
+
+
+
+
+
+
+
+
+
+
+TESTO
+pos
+0.053 2.434 0.873
+
+Arial
+-9 10
+BFcY
+1 1 0 0 0
+
+
+ /  /  / rect_main
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LINEA
+0.953 2.249 0.000 24.527
+ / rect_main /  / rect_main
+LINEA_01
+0 1
+0
+
+
+
+
+
+
+
+
+16777215
+
+
+
+
+
+
+
+
+
+
+
+TESTO
+codice
+1.032 2.434 1.111
+
+Arial
+-9 10
+BAcX
+1 1 0 0 0
+
+
+ /  /  / rect_main
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LINEA
+4.604 2.249 0.000 24.527
+ / rect_main /  / rect_main
+LINEA_02
+0 1
+0
+
+
+
+
+
+
+
+
+16777215
+
+
+
+
+
+
+
+
+
+
+
+TESTO
+descrizione
+4.736 2.408 1.931
+
+Arial
+-9 10
+BAcX
+1 1 0 0 0
+
+
+ /  /  / rect_main
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LINEA
+12.224 2.249 0.000 24.527
+ / rect_main /  / rect_main
+LINEA_03
+0 1
+0
+
+
+
+
+
+
+
+
+16777215
+
+
+
+
+
+
+
+
+
+
+
+TESTO
+q.tà
+13.070 2.434 0.635
+
+Arial
+-9 10
+BAcX
+1 1 0 0 0
+
+
+ /  /  / rect_main
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LINEA
+13.917 2.249 0.000 24.527
+ / rect_main /  / rect_main
+LINEA_04
+0 1
+0
+
+
+
+
+
+
+
+
+16777215
+
+
+
+
+
+
+
+
+
+
+
+TESTO
+costo
+15.372 2.434 0.873
+
+Arial
+0 10
+BAcX
+1 1 0 0 0
+
+
+ /  /  / rect_main
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LINEA
+16.404 2.249 0.000 24.527
+ / rect_main /  / rect_main
+LINEA_05
+0 1
+0
+
+
+
+
+
+
+
+
+16777215
+
+
+
+
+
+
+
+
+
+
+
+TESTO
+totale
+16.748 2.434 1.852
+
+Arial
+-9 10
+BFcZ
+1 1 0 0 0
+
+
+ /  /  / rect_main
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+LINEA
+0.026 2.963 18.706 0.000
+ /  / rect_main / rect_main
+LINEA_SOPRA
+0 1
+0
+
+
+
+
+
+
+
+
+16777215
+
+
+
+
+
+
+
+
+
+
+
+TESTO
+TOTALE INVENTARIO
+10.478 26.829 3.545
+
+Arial
+-9 10
+BAc9X
+1 1 0 0 0
+
+
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+cr_totale_euro
+14.446 26.829 4.260
+
+Arial
+-9 10
+BFcf~€~E9Z
+0 2 -2 2 0
+SELECT sum(round(IL_fl_qta * IL_cr_prezzo, $i_decimali_fissi))FROM inventario_lifoWHERE (IL_i_anno = $PARM_ANNO)
+1
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+parm_valuta
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+totale
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+filename
+0.291 27.517 1.270
+report_filename(0)
+Arial
+0 9
+AcX
+1 1 0 0 0
+
+ABC
+ /  /  / 
+
+AB
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+pagina
+17.701 27.517 1.005
+"pagina " + pagina() + " di " + tot_pagine()
+Arial
+0 9
+AcX
+1 1 0 0 0
+
+ABC
+ /  /  / 
+
+AB
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+fondopagina
+8.573 27.517 1.826
+
+Arial
+0 9
+AcCVX
+1 1 0 0 0
+str_print_INT_parm_footer
+ABC
+ /  /  / 
+
+AB
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+cr_totale_export
+15.981 27.093 2.778
+cr_totale_euro
+System
+0 10
+AaHXe
+0 2 0 0 0
+
+4
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+parm_valuta
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+1 30 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+totale
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DATI_INVENTARIO
+1 3.0500 23.7000 1.0400
+ABEGH
+SELECTÿnumber() AS i_pos,ÿÿIL_str_articolo,ÿIL_fl_qta,ÿIL_cr_prezzo,ÿround(IL_cr_prezzo * IL_fl_qta, $i_decimali_fissi) AS inv_cr_totale,ÿIL_i_anno,ÿÿAA_str_descrizione_corta AS str_descrizione_arkart,ÿAL_cr_listino_fornitore as cr_listino_fornitore,ÿAL_cr_scontato_fornitore as cr_scontato_fornÿÿFROM inventario_lifoÿLEFT OUTER JOIN archivio_articoli as AA ON (IL_str_articolo = AA_str_codice)ÿLEFT OUTER JOIN arkart_listini ON (AA_lo_key_listino_FORN_main = AL_lo_key)ÿÿWHERE (IL_i_anno = $PARM_ANNO)ÿAND (ABS(IL_fl_qta) > 1e-6)ÿORDER BY $RUNT_ORDER_BY
+0 0
+Arial
+0 9
+
+
+
+articolo
+
+RECT_MAIN
+
+str_articolo
+
+inv-$PARM_ANNO
+0.0000 0 0 0 0 0 0 0 0 0 0
+0 0 0 
+1 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+10
+VARIABILE
+cr_listino_forn
+13.282 0.291 2.699
+
+Arial
+0 9
+FcVHZr1
+0 2 0 0 0
+cr_listino_fornitore
+10
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+1 50 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+listino fornitore
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+cr_scontato_forn
+16.140 0.291 2.434
+
+Arial
+0 9
+FcVHZr1
+0 2 0 0 0
+cr_scontato_forn
+10
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+1 60 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+scontato fornitore
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+i_pos
+0.053 0.000 0.847
+
+Arial
+0 9
+FaRG7 VZ
+0 1 0 0 0
+i_pos
+123
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 10 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+pos
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+str_articolo
+1.032 0.000 3.545
+
+Arial
+0 9
+FcMRG7 VX
+1 1 0 0 0
+IL_str_articolo
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 20 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+codice
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+str_descrizione
+4.683 0.000 7.488
+
+Arial
+0 9
+FcMVX
+1 1 0 0 0
+str_descrizione_arkart
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 40 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+descrizione
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+cr_listino_fornitore_show
+5.609 0.318 2.540
+cr_listino_forn
+Arial
+0 8
+FDcKZr1
+0 2 0 0 0
+
+10
+ /  /  / 
+
+
+RUNT_BO_PREZZI_ARKART = "T"
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+listino fornitore
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+cr_scontato_forn_show
+8.440 0.318 2.540
+cr_scontato_forn
+Arial
+0 8
+FDcKZr1
+0 2 0 0 0
+
+10
+ /  /  / 
+
+
+RUNT_BO_PREZZI_ARKART = "T"
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+scontato fornitore
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+fl_qta
+12.303 0.000 1.482
+
+Arial
+0 9
+FDaVZ
+0 2 -3 0 0
+IL_fl_qta
+12.57
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 30 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+quantità
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+cr_prezzo
+14.049 0.000 2.223
+
+Arial
+0 9
+FcVZr2
+0 2 -2 0 0
+IL_cr_prezzo
+10
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 70 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+costo unitario
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+cr_parziale
+16.484 0.000 2.143
+
+Arial
+0 9
+FcVZ
+0 2 -2 0 0
+inv_cr_totale
+22
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 80 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+costo
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+RIMANENZE
+2 0.7000 0.3300 0.3300
+ACE
+SELECT * FROM inventario_tempÿWHERE ('$RUNT_BO_RIMANENZE' = 'T') ANDÿ(ITM_str_articolo = '$str_articolo')ÿORDER BY ITM_i_anno
+0 0
+Arial
+0 8
+I
+
+
+
+
+
+
+
+
+
+0.0000 0 0 0 0 0 0 0 0 0 0
+0 0 0 
+1 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+6
+FORMULA
+delta_scontato
+9.075 -0.053 1.905
+if (RUNT_BO_PREZZI_ARKART = "T";100.0 * if (cr_scontato_forn = 0;0;cr_prezzo_rim /  cr_scontato_forn-1);0)
+Arial
+0 8
+IFDa~%~Zr1s1
+0 2 -1 1 0
+
+0
+ /  /  / 
+RUNT_BO_PREZZI_ARKART = 'T'
+
+
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 20 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+str_articolo_rim
+1.164 -0.053 2.064
+
+Arial
+0 8
+IAaVHX
+1 2 0 0 0
+ITM_str_articolo
+ABC
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+i_anno
+10.478 -0.053 1.720
+
+Arial
+0 8
+IFaVZ
+0 2 0 0 0
+ITM_i_anno
+1999
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 30 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+cr_prezzo_rim
+13.891 -0.053 2.381
+
+Arial
+0 8
+IFcVZr1
+0 2 -2 0 0
+ITM_cr_prezzo
+0
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 50 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+VARIABILE
+fl_qta_rim
+12.118 -0.053 1.667
+
+Arial
+0 8
+IFaVZ
+0 2 -2 0 0
+ITM_fl_qta
+10
+ /  /  / 
+
+
+
+
+
+
+
+
+
+
+0.0000
+
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 40 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+FORMULA
+delta_listino
+6.562 -0.053 1.588
+if (RUNT_BO_PREZZI_ARKART = "T";100.0 * if (cr_listino_forn = 0;0;cr_prezzo_rim /  cr_listino_forn-1);0)
+Arial
+0 8
+IFDa~%~Zr1s1
+0 2 -1 1 0
+
+0
+ /  /  / 
+RUNT_BO_PREZZI_ARKART = 'T'
+
+
+
+
+
+
+
+
+
+0.0000
+PARM_VALUTA
+
+
+
+
+
+
+FF
+0
+
+0 2147483646 2147483646 0 0
+
+
+0 10 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1 14934226 14934226
+
+F
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+g-box-start
+1
+
+
+
+
+2147483646 2147483646 2147483646 2147483646
+1 0 0 0 0 0 ababababababab 0 0 0
+
+
+
+
+
+
+
+
+
+
+
+
+g-box-end
