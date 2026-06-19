@@ -600,7 +600,7 @@ begin
 		if Value then RaiseError(SNotPrinting) else RaiseError(SPrinting);
 end;
 
-[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]
+{$IF DEFINED(CLR)}[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]{$ENDIF}
 procedure TPrinter.Abort;
 begin
 	CheckPrinting(TRUE);
@@ -610,7 +610,7 @@ begin
 	FAborted := TRUE
 end;
 
-[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]
+{$IF DEFINED(CLR)}[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]{$ENDIF}
 procedure TPrinter.BeginDoc;
 var DocInfo: TDocInfo;
 begin
@@ -627,7 +627,7 @@ begin
 	if (StartDoc(DC, DocInfo) <= 0) then FPrinting := FALSE else StartPage(DC)
 end;
 
-[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]
+{$IF DEFINED(CLR)}[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]{$ENDIF}
 procedure TPrinter.EndDoc;
 begin
 	CheckPrinting(True);
@@ -636,7 +636,7 @@ begin
 	FPrinting := FALSE;FAborted := FALSE;FPageNumber := 0
 end;
 
-[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]
+{$IF DEFINED(CLR)}[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]{$ENDIF}
 procedure TPrinter.NewPage;
 begin
 	CheckPrinting(TRUE);
@@ -690,7 +690,7 @@ begin
 end;
 {$ENDIF}
 
-[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]
+{$IF DEFINED(CLR)}[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]{$ENDIF}
 procedure TPrinter.SetPrinter(ADevice, ADriver, APort: PChar; ADeviceMode: THandle);
 var I, J: Integer;
 begin
