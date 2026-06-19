@@ -90,7 +90,7 @@ begin
 	result := TFPrinter(static_FPrinter)
 end;
 
-[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]
+{$IF DEFINED(CLR)}[PrintingPermission(SecurityAction.LinkDemand, Level=PrintingPermissionLevel.AllPrinting)]{$ENDIF}
 function SetPrinter(NewPrinter : TFPrinter): TFPrinter;
 begin
 	Result := Printer;
