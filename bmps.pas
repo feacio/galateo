@@ -697,7 +697,7 @@ function cl_bmp.get_x_left_virtuale(x_left : int_pixel_type) : int_pixel_type; b
 			if NOT ca.save(f) then abort;
 			result := TRUE
 		except
-			result := FALSE;
+//			result := FALSE;
 			error_msg(father, 'Errore durante la scrittura del file', MBOX_CAPTION);
 			abort
 		end

@@ -444,9 +444,9 @@ const
 
 procedure edit_label_proc(father : TForm;lab : cl_label;i_obj : obj_index_type;bo_modal : boolean = FALSE;bo_open_page_exportazione : boolean = FALSE;i_profilo_export : expint_index_type = 0);
 begin
-	if NOT wx.can_open(father, WT_LABEL_EDIT, lab.ca.i_numero_obj.ToString) then exit;
+	if NOT wx.can_open(WT_LABEL_EDIT, father, lab.ca.i_numero_obj.ToString) then exit;
 	var dlg := TLabels.xCreate(father, lab, i_obj);
-	wx.register_window(father, dlg, WT_LABEL_EDIT, lab.ca.i_numero_obj.ToString);
+	wx.register_open_window(father, dlg, WT_LABEL_EDIT, lab.ca.i_numero_obj.ToString);
 	if bo_open_page_exportazione then begin
 		dlg.bo_dont_set_activepage := TRUE;
 		dlg.pc.Activepage := dlg.page_expint;
@@ -551,7 +551,7 @@ begin
 	expint_objects := NIL;
 
 //	if (bak_attr <> NIL) then begin bak_attr.free;bak_attr := NIL end
-	wx.close_window(self)
+	wx.register_close_window(self)
 end;
 
 procedure Tlabels.FormClose(Sender : TObject;var Action : TCloseAction);

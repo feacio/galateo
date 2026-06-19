@@ -3039,7 +3039,9 @@ label start;
 const
 	VERSIONE_BASE_EXTERNAL_FILE = $0105;
 	RUNTIME_DEBUG_CAPTION = 'read_pagina_logica_external()';
-var f : system.Text;
+var
+	s : string;
+	f : system.Text;
 begin
 	var str_runtime_debug_caption := 'lp=' + i_logical_page.ToString + ' basefile=' + str_external_filename + ' -- ';
 	writeln_system_debug(100, RUNTIME_DEBUG_CAPTION, str_runtime_debug_caption + 'START');
@@ -3052,7 +3054,7 @@ begin
 		if (IOresult = 0) then goto start;	// OK
 
 		// provo sulla directory corrente
-		var s := ExtractFileName(str_external_filename);
+		s := ExtractFileName(str_external_filename);
 		str_assigned_filename := s;
 		writeln_system_debug(120, RUNTIME_DEBUG_CAPTION, str_runtime_debug_caption + 'before try ' + str_assigned_filename);
 		assignfile(f, str_assigned_filename);reset(f);

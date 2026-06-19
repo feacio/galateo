@@ -10,13 +10,11 @@ object dlg_datamatrix: Tdlg_datamatrix
   Font.Height = -13
   Font.Name = 'System'
   Font.Style = [fsBold]
-  OldCreateOrder = False
   Position = poOwnerFormCenter
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 16
   object panel_bottom: TFPanel
     Left = 0

@@ -54,3 +54,10 @@ Desktop.ini
 *.rar
 *.zip
 *.7z
+
+# === Claude Code agent working dir ===
+.claude/
+
+# === RAD Studio per-user IDE state (not source) ===
+*.dsv
+*.dxsettings

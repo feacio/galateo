@@ -11,7 +11,8 @@ uses
   Vcl.Forms,
   Pages,
   Gun in 'Gun.pas',
-  galateo_main in 'galateo_main.pas' {GM};
+  galateo_main in 'galateo_main.pas' {GM},
+  wproc in '..\FEDERICO\wproc.pas';
 
 {$R *.res}
 
@@ -20,5 +21,6 @@ begin
 	Application.Initialize;
 	Application.MainFormOnTaskbar := True;
 	Application.CreateForm(TGM, GM);
+  if (wx <> NIL) then wx.main_form := Application.MainForm;
 	Application.Run
 end.

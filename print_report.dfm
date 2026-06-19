@@ -37,7 +37,6 @@ object dlg_print_report: Tdlg_print_report
     00FF002E00FF002C08FF002C00FF002C00FF000000FF000000FF155450FF88A8
     29FF914111FF8AAAA3FFC54547FFE2AA8FFFF1451FFFFC007FFFFF01FFFF}
   KeyPreview = True
-  OldCreateOrder = True
   OnActivate = FormActivate
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
@@ -46,7 +45,6 @@ object dlg_print_report: Tdlg_print_report
   OnKeyDown = FormKeyDown
   OnMouseWheel = FormMouseWheel
   OnResize = FormResize
-  PixelsPerInch = 96
   TextHeight = 16
   object btn_panel: TFPanel
     Left = 0
@@ -522,7 +520,6 @@ object dlg_print_report: Tdlg_print_report
         Width = 27
         Height = 41
         Action = AL_print_PDF
-        Caption = 'stampa in PDF'
         ParentShowHint = False
         ShowHint = True
         TabOrder = 2
@@ -548,7 +545,6 @@ object dlg_print_report: Tdlg_print_report
         Width = 26
         Height = 41
         Action = AL_print_mail
-        Caption = 'stampa e invia per mail'
         ParentShowHint = False
         ShowHint = True
         TabOrder = 3
@@ -574,7 +570,6 @@ object dlg_print_report: Tdlg_print_report
         Width = 24
         Height = 41
         Action = AL_reload_data
-        Caption = 'AL_reload_data'
         ParentShowHint = False
         ShowHint = True
         TabOrder = 5
@@ -655,7 +650,6 @@ object dlg_print_report: Tdlg_print_report
         Width = 27
         Height = 41
         Action = AL_export
-        Caption = 'exp'
         ParentShowHint = False
         ShowHint = True
         TabOrder = 4

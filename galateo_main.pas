@@ -420,6 +420,7 @@ type
 			bo_modified_phisical : boolean;
 			bo_modified_rimandato : boolean;		// è stato modificato lo stato MODIFIED, ma l'applicazione è stata rimandata per motivi grafici
 			procedure set_modified(bo : boolean);
+			procedure callback_form_activation(bo_activate : boolean);
 		private
 			y_zero : smallint;			// dimensione del caption + menu + pannello bottoni
 			i_setting_pagina_logica : logical_page_type;
@@ -515,6 +516,8 @@ begin
 //	icon := application.icon;
 	btn_font.BtnCaption := '';
 
+	wx := cl_form_manager.create(self, {itm_windows_menu}NIL, {MDB}NIL, callback_form_activation);
+
 	set_modified(FALSE);
 	y_zero := GetSystemMetrics(SM_CYCAPTION) + GetSystemMetrics(SM_CYMENU) + sbar.Height;
 	if NOT tm.init_video_values(getDC(Handle), 1) then begin
@@ -544,6 +547,11 @@ begin
 	{$ifdef DEBUG} dec(i_GMs); {$endif}
 	globale.Freex;		// viene eseguito qui sulla variabile locale GLOBALE; se DLL funziona in altro modo
 	globale := NIL
+end;
+
+procedure TGM.callback_form_activation(bo_activate : boolean);
+begin
+	bo_activate := TRUE; {$ifNdef DEBUG} *** {$endif DEBUG}
 end;
 
 procedure TGM.FormActivate(Sender : TObject);
@@ -717,7 +725,7 @@ begin open_documento_info(globale.str_documento_informativo_utente, DOC_INFO_UTE
 procedure TGM.AL_technical_referenceExecute(Sender : TObject);
 begin open_documento_info(globale.str_technical_reference, TECHNICAL_REFERENCE_DEFAULT_EXT, TECHNICAL_REFERENCE_FILTER) end;
 
-procedure TGM.FormCloseQuery(Sender: TObject;var CanClose: Boolean);
+procedure TGM.FormCloseQuery(Sender : TObject;var CanClose : Boolean);
 begin
 	CanClose := FALSE;
 //	if NOT wx.check_count(self, 'Chiudi tutte le finestre aperte') then exit;
@@ -1110,7 +1118,8 @@ function TGM.set_pagina_logica(i_new_pagina : logical_page_type;bo_update_indica
 begin
 	result := -1;
 	if (i_setting_pagina_logica <> 0) then exit;
-	if NOT wx.xcheck_count(self, 'Chiudi tutte le finestre prima di cambiare pagina') then exit;
+//	if NOT wx.check_count(self, 'Chiudi tutte le finestre prima di cambiare pagina') then exit;
+	if (wx.count(FALSE) > 0) then begin MessageBBox(handle, 'Chiudi tutte le finestre prima di cambiare pagina', MBOX_CAPTION, MB_ICONSTOP);exit end;
 	try
 		inc(i_setting_pagina_logica);
 		var i_previous : smallint := get_pagina_logica_attiva_1B;
@@ -1351,7 +1360,7 @@ end;
 
 procedure TGM.send_report_via_email;
 const MBOX_CAPTION = 'Invio report per posta elettronica';
-var str_external_pages : string;
+var str_external_pages : string;	//*
 begin
 //	var email : TMAPIMail := NIL;
 	for var i : logical_page_type := 0 to get_ultima_pagina_logica - 1 do begin
@@ -1654,7 +1663,7 @@ begin
 
 	str_programma := 'notepad.exe';
 execute:
-	{$ifdef DEBUG} *** provare con nomi contenenti spazi {$endif DEBUG}
+	{$ifNdef DEBUG} *** provare con nomi contenenti spazi {$endif DEBUG}
 	WinExecAndWait32(str_programma, {debug}FALSE, {Visibility}0, {wait}FALSE, {work_directory}'', '"' + globale.str_filename + '"')
 end;
 
@@ -1738,24 +1747,20 @@ end;
 procedure TGM.objects_order_execute;
 
 	function exec(i_ndx_from, i_ndx_to : obj_index_type) : boolean;
-	var i : obj_index_type;	//*
 	begin
 		if (i_ndx_from = i_ndx_to) then begin result := FALSE;exit end;	// evidentemente nulla da fare
 
 		var x_from : objs_type := xobjs(i_ndx_from);	// tengo da parte l'oggetto da spostare
 		if (i_ndx_to > i_ndx_from) then begin
-			for i := i_ndx_from to i_ndx_to-1-1 do assign_obj(i, xobjs(i+1));
+			for var i : obj_index_type := i_ndx_from to i_ndx_to-1-1 do assign_obj(i, xobjs(i+1));
 			dec(i_ndx_to)
 		end
-		else for i := i_ndx_from downto i_ndx_to+1 do assign_obj(i, xobjs(i-1));
+		else for var i : obj_index_type := i_ndx_from downto i_ndx_to+1 do assign_obj(i, xobjs(i-1));
 		assign_obj(i_ndx_to, x_from);
 		result := TRUE
 	end;
 
-var
-	i : obj_index_type;
-	x : array of objs_type;
-	s : string;
+var x : array of objs_type;
 begin
 	if (get_num_selected_objects < 2) then begin
 		MessageBBox(handle, 'Seleziona almeno due oggetti', MBOX_CAPTION);
@@ -1764,20 +1769,19 @@ begin
 
 	try
 		setLength(x, get_num_selected_objects + 1);		// per semplicità considero X 1-based
-		for i := get_num_selected_objects downto 1 do begin
+		for var i : obj_index_type := get_num_selected_objects downto 1 do begin
 			x[i] := get_selected_obj(i);
 			set_selected_obj(x[i].i_numero_obj, FALSE)	// deseleziono tutti gli oggetti (che cambieranno posizione, compreso il primo che potrebbe slittare causa spostamento di oggetti a lui precedenti)
 		end;
 
 		var i_count : obj_index_type := 0;
-		for i := 2 to high(x) do
-			if exec(x[i].i_numero_obj, x[1].i_numero_obj + i-1)
-				then inc(i_count);
+		for var i : obj_index_type := 2 to high(x) do
+			if exec(x[i].i_numero_obj, x[1].i_numero_obj + i-1) then inc(i_count);
 
-		for i := 1 to high(x) do set_selected_obj(x[i].i_numero_obj, TRUE);		// riseleziono gli oggetti alle loro nuove posizioni
+		for var i : obj_index_type := 1 to high(x) do set_selected_obj(x[i].i_numero_obj, TRUE);		// riseleziono gli oggetti alle loro nuove posizioni
 
 		if (i_count <> 0) then bo_modified := TRUE;
-		s := ifs(i_count = 0, 'NESSUNA modifica necessaria', ifs(i_count = 1, '1 oggetto riallocato', i_count.ToString + ' oggetti riallocati'));
+		VAR s := ifs(i_count = 0, 'NESSUNA modifica necessaria', ifs(i_count = 1, '1 oggetto riallocato', i_count.ToString + ' oggetti riallocati'));
 {		MessageBBox(handle, 'Riassegnazione eseguita' + ACAPO2 +
 			ifs(i_count = 0, 'NESSUNA modifica necessaria',
 			ifs(i_count = 1, '1 oggetto riallocato', inttostr(i_count) + ' oggetti riallocati')), MBOX_CAPTION) {}

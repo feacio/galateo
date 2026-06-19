@@ -375,6 +375,7 @@ function SQL_save_progressivi_pagina(father : TForm) : boolean;
 { esegue il salvataggio su database dei progressivi di pagina generati durante la stampa;
   rende TRUE in caso di successo, FALSE altrimenti }
 label retry_password;
+var s : string;
 begin
 	result := TRUE;
 	if (GX = NIL) OR GX.bo_errore_generazione then exit;	// progressivi non gestiti, o errore che impedisce l'eventuale salvataggio
@@ -392,7 +393,7 @@ begin
 						MB_QUESTION_DEF2) <> IDYES) then exit;
 					if (globale.str_GAPP_password_stampa_definitiva <> '') then begin
 retry_password:
-						var s := '';
+						s := '';
 						if NOT input_text_proc(father, father.Caption, 'Password per generazione stampa DEFINITIVA', s, 0, NIL, IDS_PASSWORD) then exit;
 						if (uppercase(s) <> uppercase(globale.str_GAPP_password_stampa_definitiva)) then begin
 							MessageBBox(father.handle, 'PASSWORD errata', MBOX_CAPTION);

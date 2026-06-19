@@ -12,6 +12,8 @@ library CASA;
 
 {$ifndef DLL}					*** DLL required ***					{$endif}	// CASA.DLL
 
+{$ifndef DEBUG} {$ifdef EXCLUDE_DRAGDROP} ** ** ** {$endif} {$endif DEBUG}
+
 // copy /B "$(OutputPath)" "E:\DX\JOLLY\main\$(Platform)\$(Config)\$(OutputName)$(OutputExt)"
 
 { Important note about DLL memory management: ShareMem must be the first unit in your library's USES clause AND your project's
@@ -21,7 +23,8 @@ library CASA;
   To avoid using BORLNDMM.DLL, pass string information using PChar or ShortString parameters. }
 
 uses
-  SimpleShareMEM,
+//  SimpleShareMEM,
+	FastMM4,
   SysUtils,
   Windows,
   Dialogs,
@@ -1239,9 +1242,9 @@ procedure init_galateo(main_window_handle : hwnd;
   JID è parte fissa
   ID è un nome che può essere:
 		JOLLY chiamata viene da JOLLY
-		GALRUN chiamata viene da GALRUN (legge i files di configurazione della connessione database deve essere attivata l'opzione )
+		GALRUN chiamata viene da GALRUN (legge i files di configurazione della connessione database deve essere attivata l'opzione)
 		QUALUNQUE ALTRA COSA non viene accettata;
-  l'ora passata come ID sia entro un ragionevole intervallo dall'ora corrente (siamo sulla stessa macchina) }
+  ORARIO: oltre a costituire parte dell'ID viene verificato che sia entro un ragionevole intervallo dall'ora corrente -- siamo sulla stessa macchina }
 const MBOX_DEBUG_CAPTION = 'init_galateo (chiamata di inizializzazione DLL)';
 begin
 //	if (FRDebug.RDEBUG_active_mode in [*]) then wo_system_debugging_mode := else ;
@@ -1298,6 +1301,7 @@ begin end;
 
 procedure init_DLL;
 begin
+	IsMultiThread := TRUE;  // forza il locking del MM condiviso (JOLLY e' multi-thread: font-loader DevExpress)
 //	addexitproc(exit_DLL);
 	// imposto il nome per l'EVENTLOG; per le chiamate eseguite sulla DLL vale l'impostazione eseguita qui sulla DLL
 //	{$ifdef DEBUG} messagebbox(0, 'AAAAAAAA', '000000000'); {$endif}
@@ -1312,7 +1316,7 @@ begin
 	bo_PDF_allowed := TRUE;
 	GALATEO_init_WPDF_DLL;	// inizializza la DLL WPDF
 
-	{$ifdef DEBUG} for var i : smallint := 1 to MAX_JOBS do assert(str_filename[i] = '', 'KWJD 2983 -- filename[' + i.ToString + '] NOT BLANK') {$endif}
+	{$ifdef DEBUG} for var i : byte := 1 to MAX_JOBS do assert(str_filename[i] = '', 'KWJD 2983 -- filename[' + i.ToString + '] NOT BLANK') {$endif}
 end;
 
 function GALATEO_check_valid_printer : boolean;

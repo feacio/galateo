@@ -17,6 +17,7 @@ uses Windows, Forms, SYsUtils;
 type
 	window_type = (WT_BLANK, WT_IMPOSTAZIONI, WT_SECTION_EDIT, WT_LABEL_EDIT, WT_IMAGE_EDIT, WT_GRAPH_EDIT, WT_DATAMATRIX_EDIT);
 const
+//	WND_NULL = WT_BLANK;
 	MAX_OPEN_WINDOWS : array[window_type] of byte = (		// 0 significa DEFAULT_MAX_WINDOWS_PER_CLASS
 		0,		//	WT_BLANK,
 		1,		// WT_IMPOSTAZIONI,		*
@@ -173,4 +174,4 @@ initialization
 	wx := cl_windows_container.create
 finalization
 	if (wx <> NIL) then begin wx.free;wx := NIL end
-end.
+*end.

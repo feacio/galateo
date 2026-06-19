@@ -403,7 +403,6 @@ begin
 	sb_index.down := globale.bo_show_index;
 //	AL_export_integrale.Hint := shortcutToText(AL_export_integrale.ShortCut) + ' ' + AL_export_integrale.Hint;
 //	AL_export_XML.Hint := shortcutToText(AL_export_XML.ShortCut) + ' ' + AL_export_XML.Hint;
-//	btn_export_integrale.Caption := '';	// altrimenti fa casino
 	AL_export.Enabled := globale.bo_export_allowed AND (globale.expint_profiles <> NIL);
 
 	btn_PDF.Caption := '';btn_reload.Caption := '';btn_export.Caption := '';btn_mail.Caption := '';
@@ -1702,7 +1701,7 @@ var
 	i, j : integer;
 	ix, iy : double;
 	ii, jj, kk, i_pos_last_virtual_printed_page, i_pagine_stampate, i_pagine_totale : ph_page_type;
-	i_pagina_logica_1B, i_pagina_logica_previous : logical_page_type;
+	i_pagina_logica_previous : logical_page_type;
 	bo_changed_pagina_logica : boolean;		// TRUE sulla prima pagina fisica di ogni pagina logica (salvo la prima pagina fisica stampata)
 	i_previous_length_10mm, id_cassetto_carta, i_PDF_orientation : smallint;
 	i_sizex, i_sizey, i_size_temp : int_pixel_type;
@@ -1713,11 +1712,8 @@ var
 	str_print_caption, str_main_printer, str_next_printer, str_previous_printer, str_next_cassetto, str_cassetto_previous : string;
 	bo_exported_something, bo_impostazioni_cambiate : boolean;
 	s, str_email_address : string;
-//	email : TMAPIMail;
-	i_PaperLength_10mm, i_PaperWidth_10mm : integer;
 	bo_need_advanced_config, bo_applica_always_stampante_main : boolean;
 	str_watermark, str_previous_watermark : string;
-	xcanvas : TCanvas;
 	lo_print_style_temp : integer;
 	str_temp_filename, str_FTP_temporary_filename : string;
 	str_actual_target_filename : string;	// nome reale effettivo del file PDF che si deve creare; il nome può variare in base al contesto (sezione, pagina)
@@ -1731,7 +1727,7 @@ begin	// exec_print()
 		// inizializzo con i valori default, altrimenti utilizzo quelli precedentemente utilizzati
 		i_PDF_orientation := 0;
 		i_previous_length_10mm := tm.i_phisical_10mm_height;lo_print_style_temp := 0;
-		xcanvas := NIL;		// ad usum compilatoris
+		var xcanvas : TCanvas := NIL;		// ad usum compilatoris
 		bo_applica_always_stampante_main := FALSE;
 	//	PDF_opt := cl_PDF.assign(globale.PDF,TRUE);
 	//	bo_stampa_diretta := cbx_print_diretta.Checked;
@@ -1776,19 +1772,19 @@ begin	// exec_print()
 			ival(i_pagina.Text, i, j);if (j <> 0) then begin beep(0);abort end;
 			if (str_pagine_logiche = '') then begin
 	//			str_pagine_logiche := '';
-				for i_pagina_logica_1B := 1 to get_ultima_pagina_logica do if pagina_stampata(i_pagina_logica_1B) then begin
+				for var i_plog_1B : logical_page_type := 1 to get_ultima_pagina_logica do if pagina_stampata(i_plog_1B) then begin
 					if (target = RTA_EXPORT) then begin
 						// per default propongo le pagine incluse nel PRIMO profilo di exportazione
-						if get_expint_page_ZB({profilo}0, i_pagina_logica_1B - 1).bo_export_allowed
-							then add_delimited(str_pagine_logiche, get_logical_page_1B(i_pagina_logica_1B).get_descrizione(TRUE))
+						if get_expint_page_ZB({profilo}0, i_plog_1B - 1).bo_export_allowed
+							then add_delimited(str_pagine_logiche, get_logical_page_1B(i_plog_1B).get_descrizione(TRUE))
 					end
 					else begin
-						if get_logical_page_1B(i_pagina_logica_1B).bo_default_print_page
-							then add_delimited(str_pagine_logiche, get_logical_page_1B(i_pagina_logica_1B).get_descrizione(TRUE))
+						if get_logical_page_1B(i_plog_1B).bo_default_print_page
+							then add_delimited(str_pagine_logiche, get_logical_page_1B(i_plog_1B).get_descrizione(TRUE))
 					end
 				end
 			end;
-			{$ifdef DEBUG} assert(str_pagine_logiche <> '', 'STR_PAGINE_LOGICHE non deve essere blasnk -- KJPX 3991'); {$endif}
+			{$ifdef DEBUG} assert(str_pagine_logiche <> '', 'STR_PAGINE_LOGICHE non può essere blank -- KJPX 3991'); {$endif}
 			str_pages_intervallo := get_intervallo_pagine_logiche(str_pagine_logiche);
 			runtime_debug('030 pre select_printer_proc()', MBOX_DEBUG_CAPTION, RD_DEBUG_ACCESSORIO_01);
 			bo_print := select_printer_proc(self, str_pages_intervallo, i_total_phisical_pages, i_num_copie, str_pagine_logiche, i, bo_printer_changed,
@@ -1960,14 +1956,17 @@ begin	// exec_print()
 				if (target = RTA_EXPORT) AND exec_export_options.bo_XML then goto stampe_export;		// se XML non stampo davvero, salto tutta la parte
 
 				// dimensioni fisiche della pagina
-				if (globale.i_forced_width_10mm = 0) then i_PaperWidth_10mm := tm.i_phisical_10mm_width else i_PaperWidth_10mm := globale.i_forced_width_10mm;
-				if (globale.i_forced_height_10mm = 0) then i_PaperLength_10mm := tm.i_phisical_10mm_height else i_PaperLength_10mm := globale.i_forced_height_10mm;
+
+//				if (globale.i_forced_width_10mm = 0) then i_PaperWidth_10mm := tm.i_phisical_10mm_width else i_PaperWidth_10mm := globale.i_forced_width_10mm;
+//				if (globale.i_forced_height_10mm = 0) then i_PaperLength_10mm := tm.i_phisical_10mm_height else i_PaperLength_10mm := globale.i_forced_height_10mm;
+				var i_PaperLength_10mm : integer := coalesce(globale.i_forced_width_10mm, tm.i_phisical_10mm_width);
+				var i_PaperWidth_10mm : integer := coalesce(globale.i_forced_height_10mm, tm.i_phisical_10mm_height);
 
 				// verifico se serve veramente la configurazione avanzata della stampante, che a volte crea qualche problema
 				bo_need_advanced_config := (globale.str_current_tray <> '');
 //				i := i_page_from;
 				i := get_intervallo_min(str_pages_intervallo);
-				i_pagina_logica_1B := -1;
+				var i_pagina_logica_1B : logical_page_type := -1;
 //				while NOT bo_need_advanced_config AND (i <= i_page_to) do begin
 				while NOT bo_need_advanced_config AND (i <> INTERVALLO_ERROR) do begin
 					j := get_pagina_logica_of_pagina_fisica_1B(i);

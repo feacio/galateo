@@ -93,9 +93,9 @@ const
 
 function bmp_dialog_proc(father : TForm;bmp : cl_bmp) : boolean;
 begin
-	if NOT wx.can_open(father, WT_IMAGE_EDIT, bmp.get_name) then begin result := FALSE;exit end;
+	if NOT wx.can_open(WT_IMAGE_EDIT, father, bmp.get_name) then begin result := FALSE;exit end;
 	var dlg := Tbmps.xcreate(father, bmp);
-	wx.register_window(father, dlg, WT_IMAGE_EDIT, bmp.get_name);
+	wx.register_open_window(father, dlg, WT_IMAGE_EDIT, bmp.get_name);
 //	dlg.showmodal;dlg.release;
 	dlg.Show;
 	result := TRUE
@@ -124,7 +124,7 @@ procedure Tbmps.FormClose(Sender : TObject;var Action : TCloseAction); begin Act
 procedure Tbmps.FormDestroy(Sender : TObject);
 begin
 	if (bmp_local <> NIL) then begin bmp_local.ca.free;bmp_local.free;bmp_local := NIL end;
-	wx.close_window(self)
+	wx.register_close_window(self)
 end;
 
 function Tbmps.save : boolean;

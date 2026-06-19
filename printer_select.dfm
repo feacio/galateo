@@ -36,12 +36,10 @@ object dlg_select_printer: Tdlg_select_printer
     00FF002E00FF002C08FF002C00FF002C00FF000000FF000000FF155450FF88A8
     29FF914111FF8AAAA3FFC54547FFE2AA8FFFF1451FFFFC007FFFFF01FFFF}
   KeyPreview = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   OnActivate = FormActivate
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 16
   object button_panel: TPanel
     Left = 0
@@ -874,10 +872,6 @@ object dlg_select_printer: Tdlg_select_printer
     object page_PDF: TTabSheet
       Caption = 'pdf'
       ImageIndex = 1
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object rb_PDF_behaviour: TRadioGroup
         Left = 4
         Top = -1
@@ -939,10 +933,6 @@ object dlg_select_printer: Tdlg_select_printer
     object page_export: TTabSheet
       Caption = 'EXPINT'
       ImageIndex = 2
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object txt_export_file_azione: TLabel
         Left = 155
         Top = 53
@@ -1044,10 +1034,6 @@ object dlg_select_printer: Tdlg_select_printer
     object page_SMTP: TTabSheet
       Caption = 'SMTP'
       ImageIndex = 3
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         245
         84)

@@ -234,7 +234,7 @@ begin
 {$endif GALATEO_EXE}
 		{$ifdef RD} runtime_debug('900' + str_debug_context, MBOX_RUNTIME_DEBUG_CAPTION, RD_DEBUG_ACCESSORIO_01) {$endif}
 	except
-		result := FALSE;
+//		result := FALSE;
 		{$ifdef RD} runtime_debug('EXCEPT' + str_debug_context + get_last_exception_msg, MBOX_RUNTIME_DEBUG_CAPTION, RD_DEBUG_ACCESSORIO_01); {$endif}
 		error_msg(father, 'Errore durante la lettura del file', MBOX_CAPTION);
 		abort
@@ -265,7 +265,7 @@ end;
 			if NOT ca.save(f) then abort;
 			writeln(f, END_OF_DATAMATRIX)			// tanto per chiudere il file
 		except
-			result := FALSE;
+//			result := FALSE;
 			error_msg(father, 'Errore durante la scrittura del file', MBOX_CAPTION);
 			abort
 		end

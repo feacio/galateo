@@ -1747,7 +1747,7 @@ var str_last_group_value : string;
 	end;
 
 label fine;
-var s, str_temp : string;	//*
+var s, str_debug_caption, str_temp : string;	//*
 begin		// load_SQL_values
 	{$ifdef VARS} if NOT bo_vars_built then build_vars; {$endif}
 	query_open(TRUE, i_section_ZB = MAIN_SECTION_ZB, TRUE, FALSE);
@@ -1756,7 +1756,7 @@ begin		// load_SQL_values
 	var bo_no_SQL := (togliblanks(qry.SQL.Text) = '');		// TRUE se la sezione non ha comandi SQL
 	if bo_dont_print_section then goto fine;
 	var i_loop : smallint := 1;var i_record_loops : smallint := 0;
-	var str_debug_caption := get_debug_record_ID(lo_row+1, get_SQL_debug_key_value);		// +1 perchè non ho ancora aggiornato LO_ROW
+	str_debug_caption := get_debug_record_ID(lo_row + 1, get_SQL_debug_key_value);		// +1 perchè non ho ancora aggiornato LO_ROW
 	runtime_debug('000 start', str_debug_caption, RD_DEBUG_ACCESSORIO_01);
 	while NOT qry.Eof OR ((lo_row = 0) AND (bo_stampa_anche_se_vuota OR bo_no_SQL OR bo_senza_dati OR (i_loop <= i_record_loops))) do begin
 		if ww_stopped then abort;

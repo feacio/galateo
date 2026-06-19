@@ -742,7 +742,7 @@ end;
 			for i := 1 to 4 do writeln(f);
 			result := TRUE
 		except
-			result := FALSE;
+//			result := FALSE;
 			error_msg(father, 'Errore durante la scrittura del file', MBOX_CAPTION);
 			abort
 		end
@@ -833,7 +833,7 @@ var
 	i, j : integer;
 	r_left, r_top, r_width : misura_real_type;	//*
 begin
-	result := FALSE;
+//	result := FALSE;
 	old.str_formula := '';old.str_SQL_expression := '';old.str_esempio_value := '';
 	{$ifdef GALATEO_EXE} old.str_hints := '';old.str_remarks := ''; {$endif}
 	old.bo_log_query_sql := FALSE;

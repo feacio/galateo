@@ -11,12 +11,10 @@ object dlg_sezione: Tdlg_sezione
   Font.Name = 'System'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
   TextHeight = 16
   object panel_bottoni: TFPanel
     Left = 0
@@ -871,7 +869,7 @@ object dlg_sezione: Tdlg_sezione
       object txt_SP: TLabel
         Left = 0
         Top = 0
-        Width = 566
+        Width = 518
         Height = 48
         Align = alTop
         Alignment = taCenter
@@ -879,7 +877,6 @@ object dlg_sezione: Tdlg_sezione
           'Le stored procedures inserite (1 per riga) in questa schermata s' +
           'aranno eseguite'#13#10'DOPO l'#39'assegnazione del valore delle variabili ' +
           'della sezione'#13#10'e PRIMA del calcolo delle formule.'
-        ExplicitWidth = 518
       end
       object memo_scripts: TMemo
         Left = 0
@@ -1458,7 +1455,7 @@ object dlg_sezione: Tdlg_sezione
           object txt_profile_message: TMyLabel
             Left = 1
             Top = 83
-            Width = 562
+            Width = 445
             Height = 16
             Align = alBottom
             Alignment = taCenter
@@ -1469,7 +1466,6 @@ object dlg_sezione: Tdlg_sezione
             FocusControl = str_profilo_workstation
             ParentColor = False
             Transparent = False
-            ExplicitWidth = 445
           end
           object r_marg_sx: TEdit
             Left = 168
@@ -1705,7 +1701,7 @@ object dlg_sezione: Tdlg_sezione
         Top = 24
         Width = 566
         Height = 285
-        ActivePage = page_export_DBF
+        ActivePage = page_exportazione
         Align = alClient
         OwnerDraw = True
         TabOrder = 0
@@ -2021,7 +2017,7 @@ object dlg_sezione: Tdlg_sezione
       object txt_header_colonne_colorate: TMyLabel
         Left = 0
         Top = 0
-        Width = 566
+        Width = 169
         Height = 24
         Align = alTop
         Alignment = taCenter
@@ -2038,7 +2034,6 @@ object dlg_sezione: Tdlg_sezione
         ShowAccelChar = False
         ShowHint = False
         Transparent = False
-        ExplicitWidth = 169
       end
       object footer_colonne_colorate: TFPanel
         Left = 0

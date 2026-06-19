@@ -290,7 +290,7 @@ begin
 	runtime_debug('200', MBOX_DEBUG_CAPTION, RD_DEBUG_ACCESSORIO_01);
 	inherited create(father);
 	runtime_debug('900', MBOX_DEBUG_CAPTION, RD_DEBUG_ACCESSORIO_01);
-	if NOT bo_open_ok then abort;
+//	if NOT bo_open_ok then abort;
 	runtime_debug('999', MBOX_DEBUG_CAPTION, RD_DEBUG_ACCESSORIO_01)
 end;
 

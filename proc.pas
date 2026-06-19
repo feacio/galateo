@@ -204,13 +204,15 @@ end;
 
 	procedure delete_log_file;
 	label fine;
-	var f : file;
+	var
+		f : file;
+		s : string;
 	begin
 		var p : LPSTR := stralloc(256);
 		Windows.GetPrivateProfileString(ODBC_GALATEO_SECTION, ODBC_DATABASEFILE, '', p, 256, ODBC_FILE_INI);
 		if (strcomp(p, '') = 0) then goto fine;
 		while (strlen(p) > 0) AND (p[strlen(p)-1] <> '.') do p[strlen(p)-1] := #0;
-		var s := strpas(p) + 'LOG';
+		s := strpas(p) + 'LOG';
 		{$WARN SYMBOL_PLATFORM OFF}
 		{$I-} system.assign(f,s);FileSetAttr(s,0);
 		{$WARN SYMBOL_PLATFORM ON}

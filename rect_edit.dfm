@@ -13,7 +13,6 @@ object dlg_rect_settings: Tdlg_rect_settings
   Font.Name = 'System'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poScreenCenter
   OnActivate = FormActivate
   OnClose = FormClose
@@ -23,7 +22,6 @@ object dlg_rect_settings: Tdlg_rect_settings
   DesignSize = (
     653
     418)
-  PixelsPerInch = 96
   TextHeight = 16
   object txt_nome: TLabel
     Left = 27

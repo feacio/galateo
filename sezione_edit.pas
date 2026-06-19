@@ -291,10 +291,10 @@ begin
 	end;
 
 	var str_ID := get_pagina_logica_attiva_ZB.toString + '-' + i_section_ZB.toString;
-	if NOT wx.can_open(GM, WT_SECTION_EDIT, str_ID) then exit;
+	if NOT wx.can_open(WT_SECTION_EDIT, GM, str_ID) then exit;
 	var dlg := Tdlg_sezione.xcreate_ZB(GM, i_section_ZB, bo_only_impostazioni_pagina, i_profilo);
 	if bo_open_page_exportazione then dlg.pc.Activepage := dlg.page_export;
-	wx.register_window(GM, dlg, WT_SECTION_EDIT, str_ID);
+	wx.register_open_window(GM, dlg, WT_SECTION_EDIT, str_ID);
 	dlg.Show;
 {	dlg.showmodal;dlg.release;
 	setup_pagina_logica(get_pagina_logica_attiva_1B);
@@ -577,7 +577,7 @@ begin
 	for var i : byte := 0 to high(expint_sections) do expint_sections[i].free;
 	expint_sections := NIL;
 
-	wx.close_window(self);
+	wx.register_close_window(self);
 	setup_pagina_logica(get_pagina_logica_attiva_1B);
 	if (i_section_ZB = MAIN_SECTION_ZB) then GM.set_disegno_values
 end;

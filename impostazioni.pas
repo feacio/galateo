@@ -680,11 +680,11 @@ var
 procedure impostazioni_proc(father : TForm);
 var dlg : Tdlg_impostazioni;
 begin
-	if NOT wx.can_open(father, WT_IMPOSTAZIONI) then exit;
+	if NOT wx.can_open(WT_IMPOSTAZIONI, father) then exit;
 	try
 		set_wait_cursor(TRUE);
 		dlg := Tdlg_impostazioni.xcreate(father);
-		wx.register_window(father, dlg, WT_IMPOSTAZIONI)
+		wx.register_open_window(father, dlg, WT_IMPOSTAZIONI)
 	finally
 		set_wait_cursor(FALSE)
 	end;
@@ -865,7 +865,7 @@ begin
 	for var sxt : text_script_type := low(sxt) to high(sxt) do
 		if (local_scripts[sxt] <> NIL) then begin local_scripts[sxt].free;local_scripts[sxt] := NIL end;
 	runtime_groupboxes_free(rgboxes);
-	wx.close_window(self)
+	wx.register_close_window(self)
 end;
 
 procedure Tdlg_impostazioni.write_window;

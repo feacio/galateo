@@ -647,7 +647,7 @@ end;
 initialization
 	galateo_initialization_debug('misure');
 //{$ifdef WIN64} {$ifdef DEBUG} exit; {$else} ******* {$endif} {$endif}
-//	init_misure		// soprattutto se WIN64 da NON chiamare prima dell'avvio dell' EXE, altrimenti si pianta tutto (2025-12-29)
+	{$ifdef GALATEO_EXE} init_misure {$endif}		// soprattutto se WIN64 da NON chiamare prima dell'avvio dell' EXE, altrimenti si pianta tutto (2025-12-29)
 finalization
 	galateo_finalization_debug('misure')
 end.

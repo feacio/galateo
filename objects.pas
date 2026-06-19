@@ -1795,7 +1795,8 @@ begin
 		end;
 		else begin
 			{$ifdef DEBUG} assert(FALSE, 'is_hidden: wrong value'); {$endif}
-			result := FALSE;abort
+//			result := FALSE;
+			abort
 		end
 	end;
 	if (show in [OSW_HIDE,OSW_HIDE_1, OSW_HIDE_LAST {,OSW_HIDE_SOMR, OSW_HIDE_EOMR}]) then

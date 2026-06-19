@@ -38,7 +38,6 @@ object GM: TGM
     29FF914111FF8AAAA3FFC54547FFE2AA8FFFF1451FFFFC007FFFFF01FFFF}
   KeyPreview = True
   Menu = main_menu
-  OldCreateOrder = True
   Position = poScreenCenter
   Visible = True
   OnActivate = FormActivate
@@ -52,7 +51,6 @@ object GM: TGM
   OnKeyUp = FormKeyUp
   OnMouseWheel = FormMouseWheel
   OnResize = FormResize
-  PixelsPerInch = 96
   TextHeight = 16
   object sbox: TScrollBox
     Left = 0
@@ -1297,7 +1295,7 @@ object GM: TGM
   end
   object popup_object: TPopupMenu
     OnPopup = popup_objectPopup
-    Left = 447
+    Left = 463
     Top = 104
     object itp_edit_obj: TMenuItem
       Caption = 'modifica oggetto'

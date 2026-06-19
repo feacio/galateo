@@ -1493,7 +1493,7 @@ function interpreta_boolean_expression(str_boolean : string;bo_test : boolean;va
 	const ZERO = 1e-8;	// approssimazione dello zero
 	var i : integer;	//*
 	begin
-		result := FALSE;
+//		result := FALSE;
 		case tipo of
 			VAL_TESTO: begin
 //				i := strIcomp(asciiz(s1), asciiz(s2));

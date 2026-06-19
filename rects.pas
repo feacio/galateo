@@ -164,7 +164,7 @@ begin
 
 		result := TRUE
 	except
-		result := FALSE;
+//		result := FALSE;
 		MessageBBox(father, 'Errore durante la lettura del file', MBOX_CAPTION, MB_ICONSTOP);
 		abort
 	end
@@ -401,7 +401,7 @@ end;
 			for var i : smallint := 1 to 11 do writeln(f);
 			result := TRUE
 		except
-			result := FALSE;
+//			result := FALSE;
 			MessageBox(father.handle, 'Errore durante la scrittura del file', MBOX_CAPTION, MB_ICONSTOP);
 			abort
 		end

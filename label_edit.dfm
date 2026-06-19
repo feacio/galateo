@@ -13,20 +13,18 @@ object labels: Tlabels
   Font.Name = 'System'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
   TextHeight = 16
   object pc: TFPageControl
     Left = 0
     Top = 29
     Width = 593
     Height = 431
-    ActivePage = page_expint
+    ActivePage = page_oggetto
     Align = alClient
     OwnerDraw = True
     TabOrder = 1
@@ -595,7 +593,7 @@ object labels: Tlabels
         Top = 18
         Width = 585
         Height = 382
-        ActivePage = page_formato_numero
+        ActivePage = page_dimensione
         Align = alBottom
         Anchors = [akLeft, akTop, akRight, akBottom]
         OwnerDraw = True
@@ -1670,7 +1668,7 @@ object labels: Tlabels
               object txt_valuta_message: TLabel
                 Left = 2
                 Top = 50
-                Width = 559
+                Width = 449
                 Height = 16
                 Align = alBottom
                 Alignment = taCenter
@@ -1680,7 +1678,6 @@ object labels: Tlabels
                 Color = 14088184
                 ParentColor = False
                 Transparent = False
-                ExplicitWidth = 449
               end
               object txt_round_valuta: TLabel
                 Left = 10
@@ -2042,7 +2039,7 @@ object labels: Tlabels
               object txt_runtime_answers: TLabel
                 Left = 0
                 Top = 0
-                Width = 391
+                Width = 122
                 Height = 16
                 Align = alTop
                 Caption = ' risposte suggerite'
@@ -2050,7 +2047,6 @@ object labels: Tlabels
                 FocusControl = str_runtime_answers
                 ParentColor = False
                 Transparent = False
-                ExplicitWidth = 122
               end
               object str_runtime_answers: TMemo
                 Left = 0
@@ -2081,7 +2077,7 @@ object labels: Tlabels
               object txt_runtime_values: TLabel
                 Left = 0
                 Top = 0
-                Width = 185
+                Width = 115
                 Height = 16
                 Align = alTop
                 Caption = ' codici di risposta'
@@ -2089,7 +2085,6 @@ object labels: Tlabels
                 FocusControl = str_runtime_values
                 ParentColor = False
                 Transparent = False
-                ExplicitWidth = 115
               end
               object str_runtime_values: TMemo
                 Left = 0
@@ -2643,7 +2638,7 @@ object labels: Tlabels
       object txt_expint_label: TLabel
         Left = 0
         Top = 0
-        Width = 585
+        Width = 351
         Height = 16
         Align = alTop
         Alignment = taCenter
@@ -2652,7 +2647,6 @@ object labels: Tlabels
         FocusControl = cb_export
         ParentColor = False
         Transparent = False
-        ExplicitWidth = 351
       end
       object lb_expint_elenco: TMyListBox
         Left = 0

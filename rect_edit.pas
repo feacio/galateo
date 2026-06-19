@@ -97,9 +97,9 @@ const
 
 procedure rect_edit_proc(father : TForm;i_obj : obj_index_type);
 begin
-	if NOT wx.can_open(father, WT_GRAPH_EDIT, i_obj.ToString) then exit;
+	if NOT wx.can_open(WT_GRAPH_EDIT, father, i_obj.ToString) then exit;
 	var dlg := Tdlg_rect_settings.xCreate(father, get_pagina_logica_attiva_1B, i_obj);
-	wx.register_window(father, dlg, WT_GRAPH_EDIT, i_obj.ToString);
+	wx.register_open_window(father, dlg, WT_GRAPH_EDIT, i_obj.ToString);
 //	dlg.ShowModal;dlg.Free
 	dlg.Show
 end;
@@ -158,7 +158,7 @@ begin
 end;
 
 procedure Tdlg_rect_settings.FormClose(Sender : TObject;var Action : TCloseAction); begin Action := caFree end;
-procedure Tdlg_rect_settings.FormDestroy(Sender : TObject); begin wx.close_window(self) end;
+procedure Tdlg_rect_settings.FormDestroy(Sender : TObject); begin wx.register_close_window(self) end;
 procedure Tdlg_rect_settings.AAA_something_modified(Sender : TObject); begin bo_something_modified := TRUE;enable_ctrls end;
 procedure Tdlg_rect_settings.btn_cancelClick(Sender : TObject); begin close end;
 

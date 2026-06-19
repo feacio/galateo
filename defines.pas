@@ -1,4 +1,4 @@
-{$I e:\DX\defines}
+{$I e:\DX13\defines}
 
 {$ifNdef DEBUG} {$define DEBUGURGENTE} {$endif}
 

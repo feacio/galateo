@@ -13,7 +13,6 @@ object bmps: Tbmps
   Font.Name = 'System'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poScreenCenter
   OnClose = FormClose
   OnCreate = FormCreate
@@ -22,7 +21,6 @@ object bmps: Tbmps
   DesignSize = (
     341
     448)
-  PixelsPerInch = 96
   TextHeight = 16
   object txt_size_y: TLabel
     Left = 23
@@ -398,7 +396,7 @@ object bmps: Tbmps
     Top = 149
     Width = 334
     Height = 199
-    ActivePage = page_formule_posizione
+    ActivePage = page_visualizzazione
     Anchors = [akLeft, akTop, akRight, akBottom]
     OwnerDraw = True
     TabOrder = 9

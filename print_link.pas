@@ -10,7 +10,7 @@ unit print_link;
 {$else}
 	{$define GALATEO}		// necessario per la DEFINES di GALATEO
 {$endif}
-{$I e:\DX\galateo\defines}
+{$I e:\DX13\galateo\defines}
 {$ifndef PRESET_GALATEO} {$undef GALATEO} {$endif}		// probabilmente inutile, ma è una forma di coerenza in piu'
 
 {$if defined(JOLLY) OR defined(JOLLY_SERVICES)} {$ifndef SCUOLA} {$ifndef SISDOC} {$ifndef GALATEO}
@@ -23,8 +23,8 @@ uses Windows, DB, Classes, Forms, SysUtils,
 	Fcommons, Fdebug, FRdebug
 	{$ifdef JOLLYEXT} ,Jdich {$endif};
 
-{$I \DX\galateo\printtyp.h}	// tipi usati per il collegamento alla DLL
-{*$I \DX\galateo\printopt.h}	// elenco delle opzioni disponibili
+{$I \DX13\galateo\printtyp.h}	// tipi usati per il collegamento alla DLL
+{*$I \DX13\galateo\printopt.h}	// elenco delle opzioni disponibili
 {$I printopt.h}	// elenco delle opzioni disponibili
 
 function		check_GALATEO_version(lo_versione_required : integer;mbox_caption : string;bo_halt_if_wrong : boolean;pt_str_error_message : string_punt = NIL) : boolean;
@@ -134,7 +134,7 @@ const
 
 	{	FILOSOFIA DELLA GESTIONE DLL
 		la versione RUNTIME utilizza la versione delle DLL che è stata copiata su su PATH pubblico
-		E:\DX\GALATEO\RUNTIMEs\$(OutputName)-32$(OutputExt) (e corrispondente versione -64)
+		E:\DX13\GALATEO\RUNTIMEs\$(OutputName)-32$(OutputExt) (e corrispondente versione -64)
 		NON può usare CASA.DLL singola per non confondersi con la CASA.DLL della versione DELPHI-6 (ugualmente su path pubblico)
 
 		la versione DEBUG deve utilizzare la versione debuggabile di CASA.DLL (nome identico a 32 e 64 bit)
@@ -145,7 +145,7 @@ const
 {$ifdef DEBUG}
 		{***********$define XPATH}
 {$ifdef XPATH}
-		'E:\DX\GALATEO\' +
+		'E:\DX13\GALATEO\' +
 		{$ifdef WIN32} 'WIN32' {$endif}
 		{$ifdef WIN64} 'WIN64' {$endif} +
 //		'\Debug\' +
@@ -205,7 +205,7 @@ function		GAL_exists_section(i_job : integer;str_section : string;var i_pagina_l
 function		GAL_exists_obj(i_job : integer;str_name : string) : boolean; begin result := TRUE end;
 function		GAL_exists_parm(i_job : integer;str_name : string) : boolean; begin result := TRUE end;
 
-{$I e:\dx\galateo\galateo_versione}
+{$I e:\DX13\galateo\galateo_versione}
 function		GAL_get_version : integer; begin result := GALATEO_VERSION end;
 function		GAL_get_DLL_version : integer; begin result := DLL_COMPATIBILITY_VERSION end;
 function		GAL_get_version_signature(bo_one_line_only : boolean) : string; begin result := '' end;
@@ -255,7 +255,7 @@ function		GAL_exists_section(i_job : integer;str_section : string;var i_pagina_l
 function		GAL_exists_obj(i_job : integer;str_name : string) : boolean; begin result := TRUE end;
 function		GAL_exists_parm(i_job : integer;str_name : string) : boolean; begin result := TRUE end;
 
-{$I e:\dx\galateo\galateo_versione}
+{$I e:\DX13\galateo\galateo_versione}
 function		GAL_get_version : integer; begin result := GALATEO_VERSION end;
 function		GAL_get_DLL_version : integer; begin result := DLL_COMPATIBILITY_VERSION end;
 function		GAL_get_version_signature(bo_one_line_only : boolean) : string; begin result := '' end;
@@ -334,7 +334,7 @@ end;
 
 function GAL_edit_report(father : TForm;str_default_print_path, str_report : string;str_calling_application_name : string = '') : boolean;
 // lancia galateo; se STR_REPORT <> '' lo apre; rende TRUE se GALATEO viene lanciato con successo
-//const GALATEO_PROGRAM = {$ifdef DEBUG} '\DX\GALATEO\' + {$endif} 'GALATEO.EXE';
+//const GALATEO_PROGRAM = {$ifdef DEBUG} '\DX13\GALATEO\' + {$endif} 'GALATEO.EXE';
 const GALATEO_PROGRAM = 'GALATEO.EXE';
 
 	function try_exec(str_program_dir : string) : boolean;
@@ -367,7 +367,7 @@ begin
 		exit
 	end;
 
-	result := try_exec(ExtractFilePath(paramstr(0))) OR try_exec('') {$ifdef DEBUG} {OR try_exec('E:\DX\bin\Win32')} {$endif DEBUG};
+	result := try_exec(ExtractFilePath(paramstr(0))) OR try_exec('') {$ifdef DEBUG} {OR try_exec('E:\DX13\bin\Win32')} {$endif DEBUG};
 	if NOT result then MessageBBox(handle, 'Impossibile eseguire GALATEO.' + ACAPO2 + 'Errore ' + GetLastError.ToString, MBOX_CAPTION, MB_ICONSTOP)
 end;
 

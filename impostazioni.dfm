@@ -15,14 +15,12 @@ object dlg_impostazioni: Tdlg_impostazioni
   Font.Name = 'System'
   Font.Style = []
   KeyPreview = True
-  OldCreateOrder = True
   Position = poOwnerFormCenter
   OnActivate = FormActivate
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
   TextHeight = 16
   object printer_panel: TFPanel
     Left = 0
@@ -84,10 +82,6 @@ object dlg_impostazioni: Tdlg_impostazioni
     TabOrder = 1
     object page_generale: TTabSheet
       Caption = 'generale'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         835
         512)
@@ -646,10 +640,6 @@ object dlg_impostazioni: Tdlg_impostazioni
     object page_opzioni: TTabSheet
       Caption = 'opzioni'
       ImageIndex = 11
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         835
         512)
@@ -1361,10 +1351,6 @@ object dlg_impostazioni: Tdlg_impostazioni
     end
     object tab_misure: TTabSheet
       Caption = '&misure'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object txt_lab_per_row: TLabel
         Left = 10
         Top = 40
@@ -1718,10 +1704,6 @@ object dlg_impostazioni: Tdlg_impostazioni
     end
     object ts_SQL: TTabSheet
       Caption = 'SQL'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       DesignSize = (
         835
         512)
@@ -1987,10 +1969,6 @@ object dlg_impostazioni: Tdlg_impostazioni
     object SQLS_model: TTabSheet
       Caption = 'SQLS_model'
       ImageIndex = 12
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object pc_SQLS_model: TFPageControl
         Left = 0
         Top = 0
@@ -2005,10 +1983,6 @@ object dlg_impostazioni: Tdlg_impostazioni
         AAA_OpenOnFirstPage = False
         object page_SQLS_00: TTabSheet
           Caption = 'modello per gli oggetti creati runtime di gestione SQL SCRIPTS'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object panel_SQLS_header: TFPanel
             Left = 0
             Top = 0
@@ -2462,10 +2436,6 @@ object dlg_impostazioni: Tdlg_impostazioni
     object macro_model: TTabSheet
       Caption = 'macro_model'
       ImageIndex = 12
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object page_macro_model: TFPageControl
         Left = 0
         Top = 0
@@ -2480,10 +2450,6 @@ object dlg_impostazioni: Tdlg_impostazioni
         AAA_OpenOnFirstPage = False
         object page_macro_00: TTabSheet
           Caption = 'modello per le linguette MACRO create runtime'
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object panel_macro_header: TFPanel
             Left = 0
             Top = 0
@@ -2831,10 +2797,6 @@ object dlg_impostazioni: Tdlg_impostazioni
     object page_PDF: TTabSheet
       Caption = 'export && PDF'
       ImageIndex = 8
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object txt_hint_export: TLabel
         Left = 0
         Top = 498
@@ -3443,10 +3405,6 @@ object dlg_impostazioni: Tdlg_impostazioni
         object page_export_mail: TTabSheet
           Caption = 'invia per mail'
           ImageIndex = 2
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 0
-          ExplicitHeight = 0
           object txt_mail_opzioni: TLabel
             Left = 0
             Top = 0
@@ -3606,10 +3564,6 @@ object dlg_impostazioni: Tdlg_impostazioni
               Caption = 'modalit'#224' di invio'
               Highlighted = True
               ImageIndex = 2
-              ExplicitLeft = 0
-              ExplicitTop = 0
-              ExplicitWidth = 0
-              ExplicitHeight = 0
               object txt_SMTP_header: TMyLabel
                 Left = 0
                 Top = 82
@@ -4427,13 +4381,12 @@ object dlg_impostazioni: Tdlg_impostazioni
               object txt_mail_default: TMyLabel
                 Left = 0
                 Top = 0
-                Width = 819
+                Width = 205
                 Height = 16
                 Align = alTop
                 Caption = 'indirizzi di destinazione default'
                 Color = 16777162
                 ParentColor = False
-                ExplicitWidth = 205
               end
               object panel_mail_indirizzo_default_elenco: TFPanel
                 Left = 0
@@ -4680,7 +4633,7 @@ object dlg_impostazioni: Tdlg_impostazioni
               object txt_mail_default_available: TMyLabel
                 Left = 0
                 Top = 0
-                Width = 819
+                Width = 603
                 Height = 16
                 Align = alTop
                 Caption = 
@@ -4688,7 +4641,6 @@ object dlg_impostazioni: Tdlg_impostazioni
                   'COMBO degli indirizzi disponibili'
                 Color = 16777162
                 ParentColor = False
-                ExplicitWidth = 603
               end
               object panel_mail_indirizzo_available_elenco: TFPanel
                 Left = 0

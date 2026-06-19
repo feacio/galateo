@@ -87,7 +87,7 @@ type
 		xobj : objs_type;									// oggetto in modifica
 		dmw : cl_datamatrix;								// Working copy
 		dm_originale : cl_datamatrix;					// puntatore ai dati originali (copia dei dati da aggiornare in caso di modifiche salvata con successo)
-		fl_DX_enter, fl_DY_enter : double;
+		fl_DX_enter{, fl_DY_enter} : double;
 		constructor xcreate(father : TForm;dm : cl_datamatrix;var bo_modified : boolean);
 		procedure enable_ctrls;
 		function read_data(dm : cl_datamatrix) : boolean;
@@ -116,9 +116,9 @@ const
 
 function datamatrix_edit_proc(father : TForm;dm : cl_datamatrix) : boolean;
 begin
-	if NOT wx.can_open(father, WT_DATAMATRIX_EDIT, dm.ca.i_numero_obj.ToString) then exit;
+	if NOT wx.can_open(WT_DATAMATRIX_EDIT, father, dm.ca.i_numero_obj.ToString) then exit;
 	var dlg := Tdlg_datamatrix.xCreate(father, dm, result);
-	wx.register_window(father, dlg, WT_DATAMATRIX_EDIT, dm.ca.i_numero_obj.ToString);
+	wx.register_open_window(father, dlg, WT_DATAMATRIX_EDIT, dm.ca.i_numero_obj.ToString);
 {	if (bo_open_page_exportazione) then begin
 		dlg.pc_visual_export.Activepage := dlg.page_export_integrale;
 		if dlg.str_expint_header.Enabled then dlg.Activecontrol := dlg.str_expint_header
@@ -156,7 +156,7 @@ end;
 procedure Tdlg_datamatrix.FormDestroy(Sender : TObject);
 begin
 	if (dmw <> NIL) then begin dmw.free;dmw := NIL end;
-	wx.close_window(self)
+	wx.register_close_window(self)
 end;
 
 procedure Tdlg_datamatrix.FormCloseQuery(Sender: TObject;var CanClose: Boolean);
