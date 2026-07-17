@@ -211,7 +211,7 @@ begin
 //		globale.str_debug_filename := ChangeFileExt(globale.str_filename, DEBUG_LOG_EXT);
 //		str_debug_filename := ChangeFileExt(str_report_filename, DEBUG_LOG_EXT);
 		str_debug_filename := get_debug_filename(str_report_filename);
-		if NOT writeable_path(extractFilePath(str_debug_filename), s) then begin
+		if NOT writable_path(extractFilePath(str_debug_filename), s) then begin
 			str_debug_filename := make_filename(str_debug_filename, get_temp_directory, {sostituisci_path}TRUE);
 			result := str_debug_filename
 		end;

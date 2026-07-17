@@ -236,9 +236,8 @@ begin
 end;
 
 procedure Tdlg_runtime.btn_cancelClick(Sender : TObject);
-var i : smallint;
 begin
-	for i := 0 to high(RPT) do xobjs(RPT[i].i_object, RPT[i].i_logical_page).aslabel.str_print := str_valori_originali[i];
+	for var i : smallint := 0 to high(RPT) do xobjs(RPT[i].i_object, RPT[i].i_logical_page).aslabel.str_print := str_valori_originali[i];
 	pt_bo_dont_close_after^ := FALSE;
 	close
 end;
@@ -348,7 +347,7 @@ begin
 	enable_ctrls
 end;
 
-procedure Tdlg_runtime.on_enter_proc(sender : TObject); 
+procedure Tdlg_runtime.on_enter_proc(sender : TObject);
 begin
 	if (sender <> NIL) then fields.standard_event_proc(sender, RSE_ON_ENTER)
 end;
@@ -393,7 +392,6 @@ end;
 function ask_runtime_parms(father : TForm;lo_print_style : integer;bo_on_exit : boolean;var bo_dont_close_after : boolean;var bo_execute_scripts : boolean) : smallint;
 { domanda i parametri che devono essere chiesti a RUNTIME;
   rende 0 se non fa nulla, +1 se ha apportato modifiche, -1 se si vuole chiudere la stampa }
-var handle : hwnd;
 
 	procedure init_parms(i_parameter_window : smallint);
 	{ fondamentale; non tanto la prima volta, ma certamente gli eventuali RELOADs;
@@ -471,19 +469,18 @@ var handle : hwnd;
 		end
 	end;
 
-var i_window : smallint;
 begin
-	handle := get_handle(father);
+	var handle : hwnd := get_handle(father);
 //	if globale.bo_first_print then init_objects;
 	var bo_modified := FALSE;
 	var bo_rebuild := (globale.bo_first_print OR bo_on_exit);
 
 	var sow : byteset := [];	// Set Of Windows numeri delle finestre di richiesta parametri; 1-based -- raccolgo il numero di tutte le finestre che POSSONO essere mostrate
-	for i_window := 0 to high(globale.runtime_gboxes) do
-		if (bo_on_exit = globale.runtime_gboxes[i_window].bo_ask_on_exit)		// solo le finestre che devono essere mostrate in questa occasione
-			then sow := sow + [globale.runtime_gboxes[i_window].i_parameter_window];
+	for var i : smallint := 0 to high(globale.runtime_gboxes) do
+		if (bo_on_exit = globale.runtime_gboxes[i].bo_ask_on_exit)		// solo le finestre che devono essere mostrate in questa occasione
+			then sow := sow + [globale.runtime_gboxes[i].i_parameter_window];
 
-	i_window := 0;
+	var i_window : smallint := 0;
 	var bo_first_window := TRUE;
 	globale.bo_exists_runtime_parms := FALSE;
 	while (sow <> []) do begin

@@ -70,6 +70,7 @@ type
 		private
 			form : TForm;
 			bo_in_standard_event : array[runtime_script_event] of boolean;
+			bo_creazione_conclusa : boolean;		// FALSE se la maschera è ancora in costruzione
 			fx : array of cl_runtime_field;
 //			EV : cl_ELE_varianti_prj;
 			RPT : runtime_parms_type;
@@ -552,10 +553,6 @@ function cl_runtime_field_elenco.set_extra_fields_ctrls(form : TForm;read_proc, 
   INCLUDE_FIELDS contiene l'indicazione dei campi da mostrare tra quelli che possono essere mostrati/nascosti }
 label after;
 var
-	i, i_group, i_group_created, y0, i_parent_control_height, i_caption_height, i_delta_form_width : smallint;
-	gbox : TGroupBox;
-	li : objs_type;
-	lab : cl_label;
 	ctrl : TWinControl;
 	txt : TLabel;
 	cb : TFCombo;
@@ -567,18 +564,16 @@ var
 	btn_browse : TFBitBtn;
 //	dt : TJvDateEdit;
 	str_field : string;
-	gx : cl_runtime_groupbox;
 	lo_text_color, lo_back_color : TColor;
 	btn_multi : TFBitBtn;
-	multi_opt : OMD_set;
 	str_default_value : string;
 begin
 	result := FALSE;
 	if (i_larghezza_barra = 0) then i_larghezza_barra := GetSystemMetrics(SM_CXVSCROLL);
 //	form.Width := form.Width + (X0_LABEL + LABEL_WIDTH + DX_CONTROL + STRING_EDIT_WIDTH + DX_CONTROL) - parent_control.Width + MARGINE_DX;	// da fare QUI!   + form.Width - form.ClientWidth
 	// calcolo di quanto deve essere modificata la dimensione della FORM; applicherò la modifica DOPO aver creato i children controls
-	i_delta_form_width := (X0_LABEL + LABEL_WIDTH + DX_CONTROL + STRING_EDIT_WIDTH + DX_CONTROL) - parent_control.Width + MARGINE_DX;
-	i_parent_control_height := parent_control.Height;
+	var i_delta_form_width : smallint := (X0_LABEL + LABEL_WIDTH + DX_CONTROL + STRING_EDIT_WIDTH + DX_CONTROL) - parent_control.Width + MARGINE_DX;
+	var i_parent_control_height : smallint := parent_control.Height;
 	form.Constraints.Minwidth := form.Width - (STRING_EDIT_WIDTH - 20);
 	parent_control.Align := alNone;
 {$ifdef DEBUG}
@@ -586,12 +581,14 @@ begin
 	assert(form.ActiveControl = NIL, 'ActiveControl già assegnato -- KJYY 8829');
 {$endif}
 	try
-		i_group_created := -1;
-		y0 := 0;gx := NIL;gbox := NIL;	// solo per rassicurare il compilatore
+		var i_group_created : smallint := -1;
+		var y0 : smallint := 0;
+		var gx : cl_runtime_groupbox := NIL;
+		var gbox : TGroupBox := NIL;	// solo per rassicurare il compilatore
 		if (parent_control = NIL) then parent_control := page;
 
-		if (globale.str_runtime_parms_caption = '') then i_caption_height := 0
-		else begin
+		var i_caption_height : smallint := 0;
+		if (globale.str_runtime_parms_caption <> '') then begin
 			txt := TLabel.Create(form);txt.Parent := form;
 			txt.Name := 'TXT_runtime_caption';txt.Alignment := taCenter;
 			txt.ShowAccelChar := FALSE;
@@ -611,9 +608,10 @@ begin
 			if (lab.i_runtime_groupbox >= length(globale.runtime_gboxes)) then lab.i_runtime_groupbox := 0
 		end; }
 
-		for i_group := 0 to high(globale.runtime_gboxes) do begin
-			for i := 0 to high(RPT) do begin
-				li := fx[i].obj;lab := li.aslabel;
+		for var i_group : smallint := 0 to high(globale.runtime_gboxes) do begin
+			for var i : smallint := 0 to high(RPT) do begin
+				var li : objs_type := fx[i].obj;
+				var lab : cl_label := li.aslabel;
 				if (lab.i_runtime_groupbox <> i_group) then continue;
 				str_field := lab.Caption;
 				if (i_group_created <> i_group) then begin
@@ -767,7 +765,7 @@ begin
 
 //						fx[i].xstr_multi := str_default_value;
 						fx[i].str_multi := fx[i].translate_descrizioni_2_codici(str_default_value, lab.RTQ_apix);
-						multi_opt := [OMD_ALL_DIFFERENT_NONE_SELECTED];
+						var multi_opt : OMD_set := [OMD_ALL_DIFFERENT_NONE_SELECTED];
 						if lab.bo_runtime_answer_can_be_blank then multi_opt := multi_opt + [OMD_ALLOW_ZERO_ANSWERS];
 //						{if () then} multi_opt := multi_opt + [OMD_INAPICIA_RISULTATO];
 						if lab.bo_RTQ_select_all_answers then multi_opt := multi_opt + [OMD_SELECT_ALL];
@@ -812,14 +810,15 @@ after:
 			end
 		end;
 
+		bo_creazione_conclusa := TRUE;	// 2026-07-07 per evitare retroazioni anticipate
 		enable_ctrls;
 //		form.Height := min(form.Height + (y0 + DELTA_Y) - parent_control.Height,screen.Height - 100);	// da fare QUI!
 //		parent_control.Height := gbox.Top + gbox.Height;
 		parent_control.Align := alClient;
 //		form.Height := min(form.Height + (gbox.Top + gbox.Height) - parent_control.Height,screen.Height - 100);	// da fare QUI!
-		i := form.Height + (i_caption_height + gbox.Top + gbox.Height) - i_parent_control_height + (parent_control.Height - parent_control.ClientHeight);
-		form.Height := min(i, screen.Height - 100);	// da fare QUI!
-		form.Constraints.MaxHeight := i;
+		var k : smallint := form.Height + (i_caption_height + gbox.Top + gbox.Height) - i_parent_control_height + (parent_control.Height - parent_control.ClientHeight);
+		form.Height := min(k, screen.Height - 100);	// da fare QUI!
+		form.Constraints.MaxHeight := k;
 
 		form.Width := form.Width + i_delta_form_width;	// applico DOPO aver creato i children controls, altrimenti fa casino
 
@@ -847,6 +846,7 @@ end;
 procedure cl_runtime_field_elenco.standard_event_proc(sender : TObject;evento : runtime_script_event);
 // procedura standard di gestione degli eventi
 begin
+	if NOT bo_creazione_conclusa then exit;
 	if bo_in_standard_event[evento] then exit;	// not reentrant, please!
 	try
 		bo_in_standard_event[evento] := TRUE;

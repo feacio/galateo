@@ -12,7 +12,7 @@ library CASA;
 
 {$ifndef DLL}					*** DLL required ***					{$endif}	// CASA.DLL
 
-{$ifndef DEBUG} {$ifdef EXCLUDE_DRAGDROP} ** ** ** {$endif} {$endif DEBUG}
+{$ifdef DEBUG} {$ifdef EXCLUDE_DRAGDROP} ** ** ** {$endif} {$endif DEBUG}
 
 // copy /B "$(OutputPath)" "E:\DX\JOLLY\main\$(Platform)\$(Config)\$(OutputName)$(OutputExt)"
 
@@ -24,7 +24,7 @@ library CASA;
 
 uses
 //  SimpleShareMEM,
-	FastMM4,
+	FastMM4,			//	vedi options su FastMM4Options.inc
   SysUtils,
   Windows,
   Dialogs,

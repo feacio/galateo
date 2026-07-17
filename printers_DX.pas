@@ -1,6 +1,6 @@
 unit printers_DX;		// modifiche derivative alla unit VCL.Printers -- ricopiata su PRINTERS_VCL.pas
 
-{$ifndef DEBUG} *** {$endif DEBUG}	// identificare cambio di postazione virtuale, ricaricare stampanti
+{$ifdef DEBUG} *** {$endif DEBUG}	// identificare cambio di postazione virtuale, ricaricare stampanti
 {https://stackoverflow.com/questions/1228290/delphi-printer-printers-not-refreshing
 
 

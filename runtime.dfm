@@ -37,13 +37,11 @@ object dlg_runtime: Tdlg_runtime
     00FF002E00FF002C08FF002C00FF002C00FF000000FF000000FF155450FF88A8
     29FF914111FF8AAAA3FFC54547FFE2AA8FFFF1451FFFFC007FFFFF01FFFF}
   KeyPreview = True
-  OldCreateOrder = True
   OnActivate = FormActivate
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
-  PixelsPerInch = 96
   TextHeight = 16
   object txt_runtime_help: TMyLabel
     AlignWithMargins = True

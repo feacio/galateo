@@ -712,7 +712,7 @@ globale.bo_address_required := TRUE;	// non so perchè ma se manca l'indirizzo la
 			MessageBBox(handle, 'Il percorso ' + uppercase(s) + ' non esiste o non è accessibile.', MBOX_CAPTION, MB_ICONSTOP);
 			exit
 		end;
-		if (s <> '') AND NOT writeable_path(s, str_error) then begin		// 2016-02-26
+		if (s <> '') AND NOT writable_path(s, str_error) then begin		// 2016-02-26
 			MessageBBox(handle, 'Il percorso ' + uppercase(s) + ' non è accessibile in scrittura', MBOX_CAPTION, MB_ICONSTOP);
 			exit
 		end;
