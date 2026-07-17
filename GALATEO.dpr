@@ -12,6 +12,7 @@ uses
   Pages,
   Gun in 'Gun.pas',
   galateo_main in 'galateo_main.pas' {GM},
+  galateo_api in 'galateo_api.pas',
   wproc in '..\FEDERICO\wproc.pas';
 
 {$R *.res}

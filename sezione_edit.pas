@@ -601,7 +601,7 @@ begin
 				exit
 			end;
 			if filename_has_explicit_path(str_SQL_filename.Text) then begin
-				if NOT writeable_path(ExtractFilePath(str_SQL_filename.Text), s) then begin
+				if NOT writable_path(ExtractFilePath(str_SQL_filename.Text), s) then begin
 					MessageBBox(handle, 'Errore nel file di salvataggio del comando SQL' + ACAPO2 + str_SQL_filename.Text + ACAPO2 + s, MBOX_CAPTION, MB_ICONSTOP);
 					exit
 				end;

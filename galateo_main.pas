@@ -489,7 +489,7 @@ implementation
 
 uses FAssert, FDebug, FXStrings, FStrings, FErrMsg, help, FMessage, FSystem_base, FSystem, FCtrls, FProcs, FFile, FBrowse, Fdata, FTime,
 	wproc, galateo_debug, about, fields, input_dialog, domanda_multipla, Fmail,
-	legami, impostazioni, pagina_logica_edit, sezione_edit, objs_elenco, expint_profilo_elenco, Gun, labels, misure, pages;
+	legami, impostazioni, pagina_logica_edit, sezione_edit, objs_elenco, expint_profilo_elenco, Gun, labels, misure, pages, galateo_api;
 
 const
 	MRU_REGISTRY_KEY = 'Software\Galateo\MRU';		// Most Recent Files (gestione privata di Galateo, niente a che fare con Windows)
@@ -536,15 +536,20 @@ begin
 //	itm_debug_full.Checked := globale.bo_debug_base;		NON ATTIVATO perchè si eseguono assegnazioni/disattivazioni non necessariamente desiderate
 //	itm_debug_base.Checked := globale.bo_debug_full;
 	MRU.LoadFromRegistry(MRU_REGISTRY_KEY);
+	{ API di authoring PRIMA del caricamento del report: TGlobale.load e' interattivo e le sue modali
+	  bloccherebbero l'avvio del server. Finche' GLOBALE e' NIL i comandi rispondono ok:false.
+	  Il server e' acceso di default: si spegne solo con /NOAPI }
+	api_start_default;
 	globale := Tglobale.create_galateo(self);
 	set_disegno_values;
-	windowstate := wsMaximized;
+	windowstate := wsMaximized
 //	{$ifdef DEBUG} check_components(self) {$endif DEBUG}			**** tanto FALSE messages
 end;
 
 procedure TGM.FormDestroy(Sender : TObject);
 begin
 	{$ifdef DEBUG} dec(i_GMs); {$endif}
+	api_stop;		// PRIMA di liberare GLOBALE: il thread della pipe potrebbe avere una richiesta in corso
 	globale.Freex;		// viene eseguito qui sulla variabile locale GLOBALE; se DLL funziona in altro modo
 	globale := NIL
 end;

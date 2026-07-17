@@ -449,6 +449,7 @@ end;
 		HELP_PARM_3 = '/h';
 		HELP_PARM_4 = '/help';
 		ALIAS_PARM = '/A';
+		NOAPI_PARM = '/NOAPI';
 
 	procedure read_parms;
 	// legge gli eventuali paramtri passati al programma ed esegue le necessarie conseguenti azioni
@@ -462,6 +463,7 @@ end;
 					'/? schermata di aiuto', MBOX_CAPTION);
 				halt
 			end;
+			if (s = NOAPI_PARM) then continue;		{ lo legge GALATEO_API: qui non deve finire per nome di file }
 			if (copy(s, 1, length(ALIAS_PARM)) = ALIAS_PARM) then begin
 				delete(s, 1, length(ALIAS_PARM));
 				continue
