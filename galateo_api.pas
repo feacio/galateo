@@ -30,7 +30,7 @@ function api_esegui(str_request : string) : string;
 
 implementation
 
-uses System.TypInfo, pages, Gun, objects, objsx, sezione, misure, galateo_main;
+uses System.TypInfo, pages, Gun, objects, objsx, sezione, misure, functions, proc, FMessage, galateo_main;
 
 type
 	cl_api_error = class(Exception);		// errore applicativo: viene reso al client come {"ok":false,"error":...}
@@ -40,6 +40,7 @@ type
 			fstr_pipe_name : string;
 			fstr_request : string;
 			fstr_response : string;
+			function crea_istanza : THandle;
 			procedure esegui_sul_main_thread;
 			procedure sblocca_connect;
 			procedure tratta_client(h_pipe : THandle);
@@ -81,6 +82,15 @@ begin
 	if (jv <> NIL) AND NOT (jv is TJSONNull) then result := jv.Value
 end;
 
+function jo_has(jo : TJSONObject;str_name : string) : boolean;
+// TRUE se il campo e' stato passato: distingue "non toccare" da "metti a stringa vuota"
+begin
+	result := FALSE;
+	if (jo = NIL) then exit;
+	var jv := jo.GetValue(str_name);
+	result := (jv <> NIL) AND NOT (jv is TJSONNull)
+end;
+
 function jo_get_num(jo : TJSONObject;str_name : string;var fl_valore : misura_real_type) : boolean;
 // rende TRUE solo se il campo c'e': serve a distinguere "non passato" da "passato a zero"
 begin
@@ -91,6 +101,77 @@ begin
 	if NOT (jv is TJSONNumber) then api_error('il campo <' + str_name + '> deve essere un numero');
 	fl_valore := TJSONNumber(jv).AsDouble;
 	result := TRUE
+end;
+
+function valida_nome(ox : objs_type;str_new_name : string;var str_msg : string) : boolean;
+{ ricalca OBJS_TYPE.CHECK_NAME (objects.pas) ma rende il messaggio invece di aprire una modale.
+  Per una label di TESTO STATICO il nome E' il testo che viene stampato: nessun vincolo di sintassi,
+  nessun obbligo di univocita', e puo' anche essere vuoto. Per ogni altro oggetto il nome e' un
+  identificatore, e deve essere univoco DENTRO la pagina }
+begin
+	result := FALSE;str_msg := '';
+	if (uppercase(str_new_name) = uppercase(ox.get_name)) then begin result := TRUE;exit end;	// nessun cambiamento
+	if (ox.ca.tipo_oggetto = LABEL_OBJ) AND (ox.ca.tipo_variabile = TV_STATIC_TEXT) then begin result := TRUE;exit end;
+	if (str_new_name = '') then begin
+		str_msg := 'solo le label di testo statico possono restare senza nome';
+		exit
+	end;
+	if CharInSet(str_new_name[1], ['0'..'9']) OR (pos(' ', str_new_name) <> 0) then begin
+		str_msg := 'il nome non puo'' contenere spazi ne'' iniziare con un numero';
+		exit
+	end;
+	for var i : smallint := 1 to length(str_new_name) do begin
+		if NOT CharInSet(upcase(str_new_name[i]), ['A'..'Z', '0'..'9', '_']) then begin
+			str_msg := 'il nome puo'' contenere solo lettere, numeri e _ : <' + str_new_name[i] + '> non va bene';
+			exit
+		end
+	end;
+	// cerco sulla pagina attiva (i_page = 0), escludendo SELF: e' quel che fa CHECK_NAME
+	if (name2index(str_new_name, [], FALSE, 0, ox.i_numero_obj) <> 0) then begin
+		str_msg := 'su questa pagina esiste gia'' un altro oggetto che si chiama <' + str_new_name + '>';
+		exit
+	end;
+	result := TRUE
+end;
+
+function valida_formula(ox : objs_type;str_formula : string;tipo : risultato_type;var str_msg : string) : boolean;
+{ ricalca CL_SEZIONE.VALIDATE_FORMULA_EDITING (sezione.pas) ma rende il messaggio invece di mostrarlo.
+  L'interprete di formule (functions.pas) ha TREDICI MessageBBox sparse dentro, e non tutte passano
+  per STR_MSG: misurato, una formula col tipo di risultato sbagliato apriva una modale e bloccava il
+  thread della pipe finche' un umano non cliccava. BO_SILENT_MODE (FMessage.pas) le fa rispondere da
+  se', e STR_LAST_SILENT_MESSAGE conserva il testo, che e' proprio la parte utile da rendere al client.
+  Il flag e' globale: si alza solo qui, e si rimette a posto nel FINALLY. Siamo sul main thread
+  (l'API arriva via Synchronize), quindi nessun altro codice gira nel frattempo }
+var bo : boolean;
+begin
+	str_msg := '';
+	str_formula := translate_local_macros(str_formula);
+	sections_1B(ox.ca.i_section_1B).interpreta_string(str_formula, {bo_stampa_vera}FALSE, {bo_check_errors}TRUE);
+	if (str_formula = '') then begin result := TRUE;exit end;
+
+	FMessage.str_last_silent_message := '';
+	FMessage.bo_silent_mode := TRUE;
+	try
+		try
+			if (tipo = VAL_BOOLEAN) then result := interpreta_boolean_expression(str_formula, {bo_test}TRUE, bo, str_msg)
+			else result := translate_formula(str_formula, str_msg, {bo_test}TRUE, tipo, ox)
+		except
+			{ l'interprete non si limita a rendere FALSE: su certi input alza eccezioni (misurato:
+			  "Range check error" su <PIPPO(((>) oppure fa ABORT dopo la modale ormai soppressa }
+			on e : Exception do begin
+				result := FALSE;
+				if (str_msg = '') then str_msg := e.Message
+			end
+		end
+	finally
+		FMessage.bo_silent_mode := FALSE
+	end;
+
+	// il messaggio della modale soppressa e' piu' esplicito di quel che passa da STR_MSG
+	if NOT result AND (FMessage.str_last_silent_message <> '') then str_msg := FMessage.str_last_silent_message;
+	if NOT result AND (str_msg = '') then str_msg := 'formula non valida (l''interprete non ha detto altro)';
+	str_msg := StringReplace(str_msg, #13#10, ' ', [rfReplaceAll]);		// il messaggio finisce su una riga di JSON: gli a-capo non servono
+	str_msg := trim(str_msg)
 end;
 
 function trova_oggetto(str_name : string;var i_page_1B : logical_page_type) : obj_index_type;
@@ -290,6 +371,64 @@ begin
 	result := descrivi_oggetto(i_obj, i_page_1B)
 end;
 
+function cmd_object_set(jo_args : TJSONObject) : TJSONValue;
+{ cambia le proprieta' di un campo: nome (che per il testo statico E' il testo stampato),
+  condizione di stampa, formula, valore di esempio. I campi non passati non vengono toccati.
+  Come OBJECT.MOVE lavora solo sulla pagina attiva: CHANGE_RIFERIMENTI scandisce gli oggetti della
+  pagina attiva, quindi rinominare stando su un'altra pagina aggiornerebbe i riferimenti sbagliati }
+var i_page_1B : logical_page_type;
+begin
+	if (globale = NIL) then api_error('GALATEO non e'' ancora inizializzato');
+	var str_name := jo_get_string(jo_args, 'name');
+	var i_obj : obj_index_type := trova_oggetto(str_name, i_page_1B);
+	if (i_page_1B <> get_pagina_logica_attiva_1B) then
+		api_error('<' + str_name + '> sta sulla pagina ' + i_page_1B.ToString + ' ma la pagina attiva e'' la ' +
+			get_pagina_logica_attiva_1B.ToString + ': attiva prima quella pagina con page.activate');
+
+	var ox : objs_type := xobjs(i_obj, i_page_1B);
+	if (ox = NIL) then api_error('oggetto <' + str_name + '> non raggiungibile');
+
+	var str_msg : string := '';
+	var bo_cambiato := FALSE;
+
+	if jo_has(jo_args, 'print_if') then begin
+		var s := jo_get_string(jo_args, 'print_if');
+		if (s <> '') AND NOT valida_formula(ox, s, VAL_BOOLEAN, str_msg) then api_error('print_if rifiutata: ' + str_msg);
+		ox.ca.str_print_if := s;
+		bo_cambiato := TRUE
+	end;
+
+	if jo_has(jo_args, 'formula') then begin
+		var s := jo_get_string(jo_args, 'formula');
+		if (s <> '') AND NOT valida_formula(ox, s, ox.ca.tipo_valore, str_msg) then api_error('formula rifiutata: ' + str_msg);
+		ox.ca.str_formula := s;
+		bo_cambiato := TRUE
+	end;
+
+	if jo_has(jo_args, 'esempio_value') then begin
+		ox.ca.str_esempio_value := jo_get_string(jo_args, 'esempio_value');
+		bo_cambiato := TRUE
+	end;
+
+	if jo_has(jo_args, 'new_name') then begin
+		var s := jo_get_string(jo_args, 'new_name');
+		if NOT valida_nome(ox, s, str_msg) then api_error('nome rifiutato: ' + str_msg);
+		if (uppercase(s) <> uppercase(ox.get_name)) then begin
+			{ prima i riferimenti, poi il nome: e' l'ordine di RECT_EDIT.PAS.
+			  NB: CHANGE_RIFERIMENTI aggiorna i legami comunitari, NON le formule che citano $NOME }
+			ox.change_riferimenti(ox.get_name, s);
+			ox.set_name(s)
+		end;
+		bo_cambiato := TRUE
+	end;
+
+	if NOT bo_cambiato then api_error('serve almeno uno fra new_name, print_if, formula, esempio_value');
+
+	GM.bo_modified := TRUE;		{ l'unica rete e' il "Vuoi salvare le modifiche?" alla chiusura: senza questo si perde }
+	GM.set_disegno_values;
+	result := descrivi_oggetto(i_obj, i_page_1B)
+end;
+
 function api_dispatch(str_cmd : string;jo_args : TJSONObject) : TJSONValue;
 begin
 	result := NIL;
@@ -297,6 +436,7 @@ begin
 	else if (str_cmd = 'report.describe') then result := cmd_report_describe
 	else if (str_cmd = 'page.activate') then result := cmd_page_activate(jo_args)
 	else if (str_cmd = 'object.move') then result := cmd_object_move(jo_args)
+	else if (str_cmd = 'object.set') then result := cmd_object_set(jo_args)
 	else api_error('comando sconosciuto: ' + str_cmd)
 end;
 
@@ -409,24 +549,51 @@ begin
 	end
 end;
 
+function cl_api_server.crea_istanza : THandle;
+// una istanza della pipe in ascolto; INVALID_HANDLE_VALUE se non creabile
+begin
+	result := CreateNamedPipe(PChar(fstr_pipe_name), PIPE_ACCESS_DUPLEX,
+		PIPE_TYPE_BYTE OR PIPE_READMODE_BYTE OR PIPE_WAIT,
+		PIPE_UNLIMITED_INSTANCES, API_BUFFER_SIZE, API_BUFFER_SIZE, 0, NIL)
+end;
+
 procedure cl_api_server.Execute;
+{ tengo sempre viva una istanza in ascolto. Il punto delicato e' un buco che c'era prima: si faceva
+  CloseHandle e SOLO DOPO si ricreava l'istanza, lasciando un istante in cui il nome della pipe non
+  aveva alcuna istanza. Un client che bussava proprio li' si sentiva rispondere "pipe inesistente",
+  cioe' "GALATEO non c'e'", mentre GALATEO stava benissimo -- corsa misurata, intermittente.
+  Ora creo la prossima istanza MENTRE il client e' ancora agganciato a quella corrente: il buco sparisce.
+  A regime, da fermo, l'istanza resta comunque una sola (la seconda vive solo durante il servizio, che
+  gira sul main thread via Synchronize ed e' brevissimo), quindi lo spegnimento via SBLOCCA_CONNECT
+  trova sempre una sola istanza libera cui agganciarsi }
 begin
 	NameThreadForDebugging('galateo_api');
+	var h_pipe := crea_istanza;
 	while NOT Terminated do begin
-		var h_pipe := CreateNamedPipe(PChar(fstr_pipe_name), PIPE_ACCESS_DUPLEX,
-			PIPE_TYPE_BYTE OR PIPE_READMODE_BYTE OR PIPE_WAIT,
-			PIPE_UNLIMITED_INSTANCES, API_BUFFER_SIZE, API_BUFFER_SIZE, 0, NIL);
 		if (h_pipe = INVALID_HANDLE_VALUE) then begin
 			sleep(1000);		// pipe non creabile: riprovo senza inchiodare la CPU
+			h_pipe := crea_istanza;
 			continue
 		end;
-		try
-			if ConnectNamedPipe(h_pipe, NIL) OR (GetLastError = ERROR_PIPE_CONNECTED) then
-				if NOT Terminated then tratta_client(h_pipe);
-			DisconnectNamedPipe(h_pipe)
-		finally
-			CloseHandle(h_pipe)
+		if ConnectNamedPipe(h_pipe, NIL) OR (GetLastError = ERROR_PIPE_CONNECTED) then begin
+			if Terminated then break;		// e' arrivato lo sblocco dello spegnimento: h_pipe lo chiude il codice sotto
+			var h_next := crea_istanza;	// la prossima istanza PRIMA di servire: cosi' non resta mai zero istanze in ascolto
+			try
+				tratta_client(h_pipe)
+			finally
+				DisconnectNamedPipe(h_pipe);
+				CloseHandle(h_pipe)
+			end;
+			h_pipe := h_next
 		end
+		else begin
+			CloseHandle(h_pipe);
+			h_pipe := crea_istanza
+		end
+	end;
+	if (h_pipe <> INVALID_HANDLE_VALUE) then begin
+		DisconnectNamedPipe(h_pipe);	// stacco l'eventuale client dello sblocco rimasto appeso
+		CloseHandle(h_pipe)
 	end
 end;
 

@@ -114,9 +114,9 @@
     <AppDPIAwarenessMode>PerMonitorV2</AppDPIAwarenessMode>
     <VerInfo_Locale>1033</VerInfo_Locale>
     <Icon_MainIcon>GALATEO.ICO</Icon_MainIcon>
-    <VerInfo_Build>369</VerInfo_Build>
+    <VerInfo_Build>373</VerInfo_Build>
     <VerInfo_MinorVer>0</VerInfo_MinorVer>
-    <VerInfo_Keys>CompanyName=;FileDescription=GALATEO;FileVersion=4.0.0.369;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.GALATEO;ProductName=GALATEO;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+    <VerInfo_Keys>CompanyName=;FileDescription=GALATEO;FileVersion=4.0.0.373;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.GALATEO;ProductName=GALATEO;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     <VerInfo_Release>0</VerInfo_Release>
     <Debugger_RunParams>C:\TEMP\CASTELLI\ordine_standard.GAL</Debugger_RunParams>
   </PropertyGroup>
