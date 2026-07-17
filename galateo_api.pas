@@ -81,6 +81,45 @@ begin
 	if (jv <> NIL) AND NOT (jv is TJSONNull) then result := jv.Value
 end;
 
+function jo_get_num(jo : TJSONObject;str_name : string;var fl_valore : misura_real_type) : boolean;
+// rende TRUE solo se il campo c'e': serve a distinguere "non passato" da "passato a zero"
+begin
+	result := FALSE;
+	if (jo = NIL) then exit;
+	var jv := jo.GetValue(str_name);
+	if (jv = NIL) OR (jv is TJSONNull) then exit;
+	if NOT (jv is TJSONNumber) then api_error('il campo <' + str_name + '> deve essere un numero');
+	fl_valore := TJSONNumber(jv).AsDouble;
+	result := TRUE
+end;
+
+function trova_oggetto(str_name : string;var i_page_1B : logical_page_type) : obj_index_type;
+{ cerca l'oggetto su TUTTE le pagine logiche e rende il suo indice, ponendo in I_PAGE_1B la pagina che lo ospita.
+  Non uso l'overload di NAME2INDEX che cerca "prima nella pagina attiva, poi nelle altre": i nomi degli oggetti
+  sono univoci solo DENTRO la pagina, quindi lo stesso nome su due pagine e' perfettamente legale e
+  quell'overload ne sceglierebbe uno in silenzio. Qui un nome ambiguo viene invece rifiutato }
+var i_trovati : smallint;
+begin
+	result := 0;i_page_1B := 0;i_trovati := 0;
+	if (str_name = '') then
+		api_error('serve <name>. NB: le label di testo statico possono non avere nome, e in tal caso non sono raggiungibili per nome');
+	for var i : logical_page_type := 1 to get_ultima_pagina_logica do begin
+		var i_temp : obj_index_type := name2index(str_name, [], FALSE, i, 0);
+		if (i_temp = 0) then continue;
+		inc(i_trovati);
+		if (i_trovati = 1) then begin
+			result := i_temp;
+			i_page_1B := i
+		end
+	end;
+	if (i_trovati = 0) then api_error('nessun oggetto si chiama <' + str_name + '>');
+	if (i_trovati > 1) then begin
+		result := 0;i_page_1B := 0;
+		api_error('<' + str_name + '> esiste su ' + i_trovati.ToString +
+			' pagine diverse: i nomi sono univoci solo dentro la pagina, non nel report')
+	end
+end;
+
 // ------------------- DESCRIZIONE DEL REPORT ----------------------------------
 
 function descrivi_oggetto(i_obj_1B : obj_index_type;i_page_1B : logical_page_type) : TJSONObject;
@@ -197,11 +236,67 @@ begin
 	end
 end;
 
+function cmd_page_activate(jo_args : TJSONObject) : TJSONValue;
+{ la pagina attiva e' un cursore globale implicito: gran parte del modello lavora solo su di essa,
+  quindi il client deve poterla spostare esplicitamente prima di toccare gli oggetti che ci stanno sopra.
+  Non alza BO_MODIFIED: la pagina attiva e' uno stato di vista, non una modifica al report }
+begin
+	if (globale = NIL) then api_error('GALATEO non e'' ancora inizializzato');
+	var fl_page : misura_real_type := 0;
+	if NOT jo_get_num(jo_args, 'page', fl_page) then api_error('serve <page>: numero della pagina logica da attivare');
+	var i_page : logical_page_type := round(fl_page);
+	if (i_page < 1) OR (i_page > get_ultima_pagina_logica) then
+		api_error('la pagina ' + i_page.ToString + ' non esiste: il report ne ha ' + get_ultima_pagina_logica.ToString);
+	var i_precedente : logical_page_type := set_pagina_logica_attiva_1B(i_page, TRUE);
+	var jo := TJSONObject.Create;
+	jo.AddPair('active_page', TJSONNumber.Create(get_pagina_logica_attiva_1B));
+	jo.AddPair('previous_page', TJSONNumber.Create(i_precedente));
+	result := jo
+end;
+
+function cmd_object_move(jo_args : TJSONObject) : TJSONValue;
+{ sposta e/o ridimensiona un oggetto; le misure sono in cm e i campi assenti restano come stanno.
+  Lavora SOLO sulla pagina attiva: ON_CHANGE_SIZE_AND_POS chiama CHECK_RESIZE_ALL, che applica le azioni
+  comunitarie usando l'indice dell'oggetto SULLA PAGINA ATTIVA; agire su un'altra pagina trascinerebbe
+  gli oggetti sbagliati senza che nessuno se ne accorga }
+var i_page_1B : logical_page_type;
+begin
+	if (globale = NIL) then api_error('GALATEO non e'' ancora inizializzato');
+	var str_name := jo_get_string(jo_args, 'name');
+	var i_obj : obj_index_type := trova_oggetto(str_name, i_page_1B);
+	if (i_page_1B <> get_pagina_logica_attiva_1B) then
+		api_error('<' + str_name + '> sta sulla pagina ' + i_page_1B.ToString + ' ma la pagina attiva e'' la ' +
+			get_pagina_logica_attiva_1B.ToString + ': attiva prima quella pagina con page.activate');
+
+	var ox : objs_type := xobjs(i_obj, i_page_1B);
+	if (ox = NIL) then api_error('oggetto <' + str_name + '> non raggiungibile');
+
+	var fl : misura_real_type := 0;
+	var bo_cambiato := FALSE;
+	if jo_get_num(jo_args, 'left_cm', fl) then begin ox.set_left(cm2pixel_video_x(fl));bo_cambiato := TRUE end;
+	if jo_get_num(jo_args, 'top_cm', fl) then begin ox.set_top(cm2pixel_video_y(fl));bo_cambiato := TRUE end;
+	if jo_get_num(jo_args, 'width_cm', fl) then begin ox.set_width(cm2pixel_video_x(fl));bo_cambiato := TRUE end;
+	if jo_get_num(jo_args, 'height_cm', fl) then begin ox.set_height(cm2pixel_video_y(fl));bo_cambiato := TRUE end;
+	if NOT bo_cambiato then api_error('serve almeno uno fra left_cm, top_cm, width_cm, height_cm');
+
+	ox.check_size;						{ larghezza e altezza minime }
+	ox.check_pos_in_section;		{ l'oggetto non puo' uscire dalla sezione che lo contiene }
+	ox.on_change_size_and_pos;		{ azioni comunitarie: trascina gli oggetti legati a questo }
+	GM.bo_modified := TRUE;			{ l'unica rete e' il "Vuoi salvare le modifiche?" alla chiusura: senza questo si perde }
+	GM.set_disegno_values;
+
+	{ rendo l'oggetto COM'E' RIMASTO, non come lo si e' chiesto: CHECK_SIZE e CHECK_POS_IN_SECTION
+	  possono avere corretto i valori, e il client deve vedere il risultato vero }
+	result := descrivi_oggetto(i_obj, i_page_1B)
+end;
+
 function api_dispatch(str_cmd : string;jo_args : TJSONObject) : TJSONValue;
 begin
 	result := NIL;
 	if (str_cmd = 'ping') then result := cmd_ping
 	else if (str_cmd = 'report.describe') then result := cmd_report_describe
+	else if (str_cmd = 'page.activate') then result := cmd_page_activate(jo_args)
+	else if (str_cmd = 'object.move') then result := cmd_object_move(jo_args)
 	else api_error('comando sconosciuto: ' + str_cmd)
 end;
 

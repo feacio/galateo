@@ -16,13 +16,23 @@ const MODELLO = `Modello di GALATEO:
 - print_if e' una condizione: l'oggetto si stampa solo se e' vera.
 
 IMPORTANTE: identifica sempre un oggetto per 'name', mai per 'index'. Cancellare un oggetto compatta
-l'array e rinumera tutti quelli successivi, quindi gli indici non sono stabili tra una chiamata e l'altra.`;
+l'array e rinumera tutti quelli successivi, quindi gli indici non sono stabili tra una chiamata e l'altra.
+I nomi sono univoci solo DENTRO una pagina, non nel report: se lo stesso nome esiste su due pagine i
+comandi rifiutano invece di scegliere. Le label di testo statico possono non avere nome affatto, e in
+quel caso non sono raggiungibili per nome.
+
+La PAGINA ATTIVA e' un cursore globale implicito: i comandi che modificano un oggetto lavorano solo
+sulla pagina attiva. Se l'oggetto sta su un'altra pagina, attivala prima con galateo_page_activate.`;
+
+const NIENTE_UNDO = `In GALATEO NON esiste un undo. Le modifiche restano in memoria e l'API non salva mai
+su disco: a salvare o a buttare via decide l'utente, rispondendo al "Vuoi salvare le modifiche?" alla
+chiusura di GALATEO. Non dire mai all'utente che una modifica e' stata salvata.`;
 
 const ISTANZA = `Possono esserci piu' GALATEO aperti insieme, ciascuno con un report diverso. Se ce n'e'
 uno solo viene scelto da se'; se ce ne sono di piu' devi passare 'instance' col pid, che trovi con
 galateo_instances. Non tirare a indovinare: scrivere sul report sbagliato non e' annullabile.`;
 
-const server = new McpServer({ name: "galateo", version: "0.2.0" });
+const server = new McpServer({ name: "galateo", version: "0.3.0" });
 
 const instanceArg = {
 	instance: z
@@ -76,7 +86,9 @@ server.registerTool(
 		title: "Verifica che GALATEO risponda",
 		description:
 			`Verifica che un GALATEO sia raggiungibile. Rende la versione del protocollo, il pid, la pipe e ` +
-			`il report aperto. Usalo per primo se un altro comando fallisce.\n\n` + ISTANZA,
+			`il report aperto. Usalo per primo se un altro comando fallisce.
+
+` + ISTANZA,
 		inputSchema: instanceArg
 	},
 	async ({ instance }) => run("ping", instance)
@@ -93,11 +105,74 @@ e la loro gerarchia) e degli oggetti (con tipo, posizione in cm, formula, espres
 
 ` +
 			MODELLO +
-			`\n\n` +
+			`
+
+` +
 			ISTANZA,
 		inputSchema: instanceArg
 	},
 	async ({ instance }) => run("report.describe", instance)
+);
+
+server.registerTool(
+	"galateo_page_activate",
+	{
+		title: "Attiva una pagina logica",
+		description:
+			`Rende attiva una pagina logica del report. Serve prima di modificare un oggetto che non sta
+sulla pagina attualmente attiva: la pagina attiva e' un cursore globale e i comandi di modifica
+lavorano solo su di essa.
+
+Non e' una modifica al report ma uno spostamento di vista: non sporca il documento.
+
+` + ISTANZA,
+		inputSchema: {
+			page: z.number().int().min(1).describe("Numero della pagina logica da attivare (1 = la prima)."),
+			...instanceArg
+		}
+	},
+	async ({ page, instance }) => run("page.activate", instance, { page })
+);
+
+server.registerTool(
+	"galateo_object_move",
+	{
+		title: "Sposta o ridimensiona un oggetto",
+		description:
+			`Sposta e/o ridimensiona un oggetto del report, indicandolo per nome. Le misure sono in
+CENTIMETRI e relative alla sezione che contiene l'oggetto. Passa solo i campi che vuoi cambiare:
+quelli che ometti restano come sono. Serve almeno un campo fra left_cm, top_cm, width_cm, height_cm.
+
+Rende l'oggetto COM'E' RIMASTO, non come l'hai chiesto: GALATEO impone dimensioni minime e vieta a un
+oggetto di uscire dalla propria sezione, quindi i valori possono venire corretti. Leggi la risposta
+invece di dare per scontato che sia andata come volevi.
+
+Attenzione agli effetti a distanza: se l'oggetto ha delle "azioni comunitarie", spostarlo trascina
+anche gli oggetti legati a lui. Rileggi con galateo_report_describe se devi esserne sicuro.
+
+` +
+			NIENTE_UNDO +
+			`
+
+` +
+			ISTANZA,
+		inputSchema: {
+			name: z.string().min(1).describe("Nome dell'oggetto da spostare. Case-insensitive."),
+			left_cm: z.number().optional().describe("Nuova distanza dal bordo sinistro della sezione, in cm."),
+			top_cm: z.number().optional().describe("Nuova distanza dal bordo superiore della sezione, in cm."),
+			width_cm: z.number().optional().describe("Nuova larghezza, in cm."),
+			height_cm: z.number().optional().describe("Nuova altezza, in cm."),
+			...instanceArg
+		}
+	},
+	async ({ name, left_cm, top_cm, width_cm, height_cm, instance }) => {
+		const args: Record<string, unknown> = { name };
+		if (left_cm !== undefined) args.left_cm = left_cm;
+		if (top_cm !== undefined) args.top_cm = top_cm;
+		if (width_cm !== undefined) args.width_cm = width_cm;
+		if (height_cm !== undefined) args.height_cm = height_cm;
+		return run("object.move", instance, args);
+	}
 );
 
 const transport = new StdioServerTransport();
