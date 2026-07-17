@@ -69,8 +69,28 @@ claude mcp add galateo --scope user -- node E:\DX13\GALATEO\mcp\dist\index.js
 | `galateo_instances`       | `ping` su ciascuna pipe trovata | no |
 | `galateo_ping`            | `ping`            | no      |
 | `galateo_report_describe` | `report.describe` | no      |
+| `galateo_page_activate`   | `page.activate`   | no (sposta solo il cursore di vista) |
+| `galateo_object_move`     | `object.move`     | si'     |
 
-Per ora la superficie e' di sola lettura.
+### Perche' `object.move` lavora solo sulla pagina attiva
+
+Non e' una scorciatoia. `on_change_size_and_pos` chiama `check_resize_all`, che applica le azioni
+comunitarie usando l'indice dell'oggetto **sulla pagina attiva**: agire su un'altra pagina
+trascinerebbe gli oggetti sbagliati, e nessuno se ne accorgerebbe. Da qui `page.activate` come
+comando separato.
+
+### Indirizzare per nome: due trappole
+
+I nomi degli oggetti sono univoci **solo dentro la pagina**, non nel report, e le label di testo
+statico possono non avere nome affatto. `trova_oggetto` quindi scandisce da se' tutte le pagine
+invece di usare l'overload di `name2index` che cerca "prima nella pagina attiva, poi nelle altre":
+quello, davanti a due omonimi legali, ne sceglierebbe uno in silenzio. Un nome ambiguo viene rifiutato.
+
+### `object.move` rende l'oggetto com'e' RIMASTO
+
+Non come lo si e' chiesto. `check_size` e `check_pos_in_section` correggono i valori, e le posizioni
+vivono in pixel video: i centimetri si quantizzano nel giro di andata e ritorno (chiesto 5.633,
+ottenuto 5.636). Il client deve leggere la risposta.
 
 ## Nota su read_parms (proc.pas)
 
@@ -80,11 +100,19 @@ del file da aprire**. Un parametro sconosciuto quindi non viene ignorato: fa com
 Per questo `/NOAPI` e' gestito esplicitamente li' dentro. Chi aggiunge parametri nuovi a GALATEO deve
 ricordarsene.
 
-## Prima di aggiungere comandi di scrittura
+## La rete di sicurezza: l'API non salva mai
 
-Due vincoli noti, non ancora risolti:
+In GALATEO non esiste un undo: niente stack, niente command pattern. Ma una rete c'e' gia', ed e'
+`TGM.FormCloseQuery` (`galateo_main.pas`): se `bo_modified` e' TRUE, chiudendo GALATEO compare
+"Vuoi salvare le modifiche?", e rispondere NO butta via tutto.
 
-1. **In GALATEO non esiste un undo.** Non c'e' stack, non c'e' command pattern. L'unica rete e' il
-   `.~GAL` scritto al salvataggio. Prima di far scrivere un LLM va costruito uno snapshot/restore.
-2. **`TGlobale.save` e' interattivo**: chiede la firma e la conferma della versione. Serve un
-   percorso di salvataggio silenzioso prima di poter esporre `report.save`.
+Quindi la regola e': **ogni mutazione alza `GM.bo_modified`, e l'API non scrive mai su disco.** A
+salvare o a buttare via decide l'utente, con codice esercitato da anni. Costo: zero righe nuove.
+
+Uno snapshot/restore resterebbe utile -- annullare *una parte* delle modifiche invece di tutte -- ma
+si paga caro: `TGlobale.save` ha sette gate interattivi (firma, conferma versione, sola lettura,
+fallimento del `.BAK`, ...) e per giunta muta il modello anche quando riesce (`wo_versione_read`,
+`bo_saved_debug`, `obj_select(0)`), che e' esattamente cio' che una rete di sicurezza non deve fare.
+Non conviene pagarlo prima che la superficie di scrittura abbia preso una forma.
+
+Per la stessa ragione `report.save` non e' esposto.
